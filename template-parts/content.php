@@ -58,6 +58,5 @@
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
-		<?php ecommerce_delejos_entry_footer(); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->

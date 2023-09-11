@@ -138,12 +138,14 @@ add_action( 'widgets_init', 'ecommerce_delejos_widgets_init' );
  * Enqueue scripts and styles.
  */
 function ecommerce_delejos_scripts() {
+	
+    wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css');
 	wp_enqueue_style( 'ecommerce-delejos-style', get_stylesheet_uri(), array(), _S_VERSION );
+	
 	wp_style_add_data( 'ecommerce-delejos-style', 'rtl', 'replace' );
 
 	wp_enqueue_script( 'ecommerce-delejos-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+    wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js', array('jquery'), '5.2.3', true);	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
 }
@@ -193,7 +195,21 @@ function display_products_by_country($country) {
     }
 }
 
-
+// Define a custom function to modify the product URLs.
+function custom_rewrite_rules() {
+    add_rewrite_rule(
+        '^flores-ecuador/([^/]+)/([^/]+)/?$',
+        'index.php?product_category=$matches[1]&product=$matches[2]',
+        'top'
+    );
+}
+add_action('init', 'custom_rewrite_rules');
+function custom_query_vars($query_vars) {
+    $query_vars[] = 'product_category';
+    $query_vars[] = 'product';
+    return $query_vars;
+}
+add_filter('query_vars', 'custom_query_vars');
 /**
  * Implement the Custom Header feature.
  */
