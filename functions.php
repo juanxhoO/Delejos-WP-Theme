@@ -9,7 +9,7 @@
 
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
-	define('_S_VERSION', '1.0.0');
+	define('_S_VERSION', '1.0.2');
 }
 
 /**
@@ -50,9 +50,12 @@ function ecommerce_delejos_setup()
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus(
 		array(
-			'menu-1' => esc_html__('Primary', 'ecommerce-delejos'),
+			'header-menu' => esc_html__('Primary', 'ecommerce-delejos'),
+			'category-menu' => esc_html__('Category', 'ecommerce-delejos'),
+			'footer-menu' => esc_html__('Footer', 'ecommerce-delejos')
 		)
 	);
+
 
 	/*
 	 * Switch default core markup for search form, comment form, and comments
@@ -134,6 +137,72 @@ function ecommerce_delejos_widgets_init()
 			'after_title' => '</h2>',
 		)
 	);
+
+
+	//Main Homepage Footer Widgets 
+	register_sidebar(
+		array(
+			'name' => esc_html__('Footer 1', 'ecommerce-delejos'),
+			'id' => 'footer-1',
+			'description' => esc_html__('Add widgets here.', 'ecommerce-delejos'),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget' => '</section>',
+			'before_title' => '<h2 class="widget-title">',
+			'after_title' => '</h2>',
+		)
+	);
+
+	register_sidebar(
+		array(
+			'name' => esc_html__('Footer 2', 'ecommerce-delejos'),
+			'id' => 'footer-2',
+			'description' => esc_html__('Add widgets here.', 'ecommerce-delejos'),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget' => '</section>',
+			'before_title' => '<h2 class="widget-title">',
+			'after_title' => '</h2>',
+		)
+	);
+
+	register_sidebar(
+		array(
+			'name' => esc_html__('Footer 3', 'ecommerce-delejos'),
+			'id' => 'footer-3',
+			'description' => esc_html__('Add widgets here.', 'ecommerce-delejos'),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget' => '</section>',
+			'before_title' => '<h2 class="widget-title">',
+			'after_title' => '</h2>',
+		)
+	);
+
+	register_sidebar(
+		array(
+			'name' => esc_html__('Footer 4', 'ecommerce-delejos'),
+			'id' => 'footer-4',
+			'description' => esc_html__('Add widgets here.', 'ecommerce-delejos'),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget' => '</section>',
+			'before_title' => '<h2 class="widget-title">',
+			'after_title' => '</h2>',
+		)
+	);
+
+	//Country Homepage
+	register_sidebar(
+		array(
+			'name' => esc_html__('Country Footer', 'ecommerce-delejos'),
+			'id' => 'country-footer-1',
+			'description' => esc_html__('Add widgets here.', 'ecommerce-delejos'),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget' => '</section>',
+			'before_title' => '<h3 class="widget-title">',
+			'after_title' => '</h3>',
+		)
+	);
+
+
+
 }
 add_action('widgets_init', 'ecommerce_delejos_widgets_init');
 
@@ -157,6 +226,52 @@ function ecommerce_delejos_scripts()
 add_action('wp_enqueue_scripts', 'ecommerce_delejos_scripts');
 
 // Custom function to get products by country attribute
+
+
+class Bootstrap_Nav_Walker extends Walker_Nav_Menu
+{
+	function start_lvl(&$output, $depth = 0, $args = null)
+	{
+		// Add Bootstrap dropdown class to submenu ul
+		$output .= '<ul class="dropdown-menu">';
+	}
+
+	function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
+	{
+		// Add Bootstrap classes to each menu item's <li> element
+		$classes = empty($item->classes) ? array() : (array) $item->classes;
+
+		$class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
+
+
+		// Check if the menu item has children (sub-menu)
+		$has_children = in_array('menu-item-has-children', $item->classes) || in_array('page-item-has-children', $item->classes);
+
+		if ($has_children) {
+			$class_names .= ' dropdown'; // Add "dropdown" class if it has children
+		}
+
+		$class_names = ' class="nav-item ' . esc_attr($class_names) . '"'; // Add "nav-item" class
+
+		$output .= '<li' . $class_names . '>';
+
+		// Add Bootstrap dropdown class to parent li if it has submenu items
+		if ($args->walker->has_children) {
+			$output .= ' <a href="' . esc_url($item->url) . '" class="nav-link dropdown-toggle" data-toggle="dropdown">';
+		} else {
+			$output .= ' <a href="' . esc_url($item->url) . '" class="nav-link">';
+		}
+
+		$output .= esc_html($item->title);
+		$output .= '</a>';
+	}
+
+	function end_lvl(&$output, $depth = 0, $args = null)
+	{
+		// Close the submenu ul
+		$output .= '</ul>';
+	}
+}
 
 
 function display_products_by_country($country)

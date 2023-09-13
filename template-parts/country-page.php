@@ -7,38 +7,61 @@
  * @package Delejos_Theme
  */
 get_header();
-$product_category = get_query_var('product_category');
-$product = get_query_var('product');
-
-// Use these variables to fetch and display the product content.
-// Example: Query your database and display product details.
-
-// echo($country);
-// echo($product);
-// Get all countries from woocommerce.
-$countries = WC()->countries->get_countries();
-
-
-if (!empty($countries)) {
-    // Loop through the list of countries and generate checkboxes
-    foreach ($countries as $code => $name) {
-        ?>
-        <label for="country_<?php echo esc_attr($code); ?>">
-            <input type="checkbox" id="country_<?php echo esc_attr($code); ?>" name="selected_countries[]" value="<?php echo esc_attr($code); ?>" />
-            <?php echo esc_html($name); ?>
-        </label>
-        <br>
-        <?php
-    }
-} else {
-    echo 'No countries found.';
-}
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<?php ecommerce_delejos_post_thumbnail(); ?>
+<style>
+	/* Dropdown on Hover */
+	.nav-item.dropdown:hover .dropdown-menu {
+		display: block;
+	}
 
-	<div class="entry-content">
+	/* Ensure the dropdown menu appears above other content */
+	.dropdown-menu {
+		position: absolute;
+		z-index: 1000;
+	}
+</style>
+
+<header class="entry-header">
+	<div class="top_menu container d-flex flex-wrap">
+		<ul class="nav me-auto">
+			<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
+
+			<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
+
+			<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
+		</ul>
+
+		<div>
+			currency exchanger
+		</div>
+		<div>
+
+			Languaje Siwtch
+		</div>
+	</div>
+</header><!-- .entry-header -->
+
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+
+	<div class="entry-content container">
 		<main id="primary" class="site-main">
+
+			<div class="navbar navbar-expand-lg navbar-light bg-light ">
+				<div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
+					<?php
+					wp_nav_menu(
+						array(
+							'theme_location' => 'category-menu',
+							// Change this to your menu location
+							'menu_class' => 'navbar-nav ml-auto',
+							'walker' => new Bootstrap_Nav_Walker(),
+
+						)
+					);
+					?>
+				</div>
+
+			</div>
 
 			<?php
 			while (have_posts()):
@@ -58,10 +81,21 @@ if (!empty($countries)) {
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
+
+		<div class="container">
+			<?php
+			wp_nav_menu(
+				array(
+					'theme_location' => 'footer-menu',
+					// Change this to your menu location
+					'menu_class' => 'nav justify-content-center border-bottom',
+					// Use the custom walker class for this menu
+				)
+			);
+			?>
+		</div>
 		<?php wp_footer();
-		get_footer();
 
 		?>
-
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->
