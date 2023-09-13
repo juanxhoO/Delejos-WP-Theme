@@ -46,39 +46,37 @@ get_header();
 	<div class="entry-content container">
 		<main id="primary" class="site-main">
 
-			<div class="navbar navbar-expand-lg navbar-light bg-light ">
-				<div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
-					<?php
-					wp_nav_menu(
-						array(
-							'theme_location' => 'category-menu',
-							// Change this to your menu location
-							'menu_class' => 'navbar-nav ml-auto',
-							'walker' => new Bootstrap_Nav_Walker(),
-
-						)
-					);
-					?>
+			<?php
+			if (has_nav_menu('page_a')) {
+				// do something
+				?>
+				<div class="navbar navbar-expand-lg navbar-light bg-light ">
+					<div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
+						<?php
+						wp_nav_menu(
+							array(
+								'theme_location' => 'category-menu',
+								// Change this to your menu location
+								'menu_class' => 'navbar-nav ml-auto',
+								'walker' => new Bootstrap_Nav_Walker(),
+							)
+						);
+						?>
+					</div>
 				</div>
-
-			</div>
+				<?php
+			} ?>
 
 			<?php
 			while (have_posts()):
 				the_post();
-
 				get_template_part('template-parts/content', 'page');
-
-				// If comments are open or we have at least one comment, load up the comment template.
-				if (comments_open() || get_comments_number()):
-					comments_template();
-				endif;
-
 			endwhile; // End of the loop.
 			?>
 
 		</main><!-- #main -->
 	</div><!-- .entry-content -->
+
 
 	<footer class="entry-footer">
 

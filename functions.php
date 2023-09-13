@@ -9,8 +9,8 @@
 
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
-	define('_S_VERSION', '1.0.2');
 }
+define('_S_VERSION', '3.2.2');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -237,7 +237,9 @@ class Bootstrap_Nav_Walker extends Walker_Nav_Menu
 	}
 
 	function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
-	{
+	{ if (empty($item->title)) {
+        return;
+    }
 		// Add Bootstrap classes to each menu item's <li> element
 		$classes = empty($item->classes) ? array() : (array) $item->classes;
 
