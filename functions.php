@@ -10,7 +10,7 @@
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 }
-define('_S_VERSION', '3.2.2');
+define('_S_VERSION', '3.22.2222');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -431,3 +431,5 @@ if (defined('JETPACK__VERSION')) {
 if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
+
+
