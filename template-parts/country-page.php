@@ -8,39 +8,72 @@
  */
 get_header();
 ?>
-<header class="entry-header">
-	<div class="top_menu container d-flex flex-wrap">
-		<ul class="nav me-auto">
-			<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
 
-			<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
-
-			<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
-		</ul>
-
-		<div>
-			currency exchanger
-		</div>
-		<div>
-
-			Languaje Siwtch
-		</div>
-	</div>
-</header><!-- .entry-header -->
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+	<div class="container">
+		<div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"
+					aria-label="Slide 1" aria-current="true"></button>
+				<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"
+					class=""></button>
+				<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"
+					class=""></button>
+			</div>
+			<div class="carousel-inner">
+				<div class="carousel-item carousel-item-next carousel-item-start">
+					<img src="http://localhost/wp-content/uploads/2023/09/c_banner4.jpg">
+					<div class="container">
+						<div class="carousel-caption text-start">
+							<h1>Example headline.</h1>
+							<p class="opacity-75">Some representative placeholder content for the first slide of the
+								carousel.</p>
+							<p><a class="btn btn-lg btn-primary" href="#">Sign up today</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<img src="http://localhost/wp-content/uploads/2023/09/c_banner.jpg">
+					<div class="container">
+						<div class="carousel-caption">
+							<h1>Another example headline.</h1>
+							<p>Some representative placeholder content for the second slide of the carousel.</p>
+							<p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
+						</div>
+					</div>
+				</div>
+				<div class="carousel-item active carousel-item-start">
+					<img src="http://localhost/wp-content/uploads/2023/09/c_banner3.jpg">
+					<div class="container">
+						<div class="carousel-caption text-end">
+							<h1>One more for good measure.</h1>
+							<p>Some representative placeholder content for the third slide of this carousel.</p>
+							<p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
 
-	<div class="entry-content">
 		<main id="primary" class="site-main container">
 
-			<div class="navbar navbar-expand-lg navbar-light bg-light ">
+			<div class="navbar navbar-expand-lg category-navbar">
 				<div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
 					<?php
 					wp_nav_menu(
 						array(
 							'theme_location' => 'category-menu',
 							// Change this to your menu location
-							'menu_class' => 'navbar-nav ml-auto',
+							'menu_class' => 'navbar-nav d-flex justify-content-between',
 							'walker' => new Bootstrap_Nav_Walker(),
 						)
 					);
@@ -58,24 +91,9 @@ get_header();
 
 		</main><!-- #main -->
 	</div><!-- .entry-content -->
-
-
-	<footer class="entry-footer">
-
-		<div class="container">
-			<?php
-			wp_nav_menu(
-				array(
-					'theme_location' => 'footer-menu',
-					// Change this to your menu location
-					'menu_class' => 'nav justify-content-center border-bottom',
-					// Use the custom walker class for this menu
-				)
-			);
-			?>
-		</div>
-		<?php wp_footer();
-
-		?>
-	</footer><!-- .entry-footer -->
+	<?php wp_footer(); ?>
 </article><!-- #post-<?php the_ID(); ?> -->
+
+<?php
+	get_footer();
+?>

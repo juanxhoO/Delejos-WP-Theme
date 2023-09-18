@@ -10,7 +10,7 @@
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 }
-define('_S_VERSION', '3.22.2222');
+define('_S_VERSION', '1.3.22');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -52,7 +52,9 @@ function ecommerce_delejos_setup()
 		array(
 			'header-menu' => esc_html__('Primary', 'ecommerce-delejos'),
 			'category-menu' => esc_html__('Category', 'ecommerce-delejos'),
-			'footer-menu' => esc_html__('Footer', 'ecommerce-delejos')
+			'footer-menu' => esc_html__('Footer', 'ecommerce-delejos'),
+			'home-menu' => esc_html__('Home', 'ecommerce-delejos')
+
 		)
 	);
 

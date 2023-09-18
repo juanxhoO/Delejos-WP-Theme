@@ -24,10 +24,8 @@ function ecommerce_delejos_woocommerce_setup()
 			'single_image_width' => 300,
 			'product_grid' => array(
 				'default_rows' => 3,
-				'min_rows' => 3,
-				'default_columns' => 4,
-				'min_columns' => 3,
-				'max_columns' => 6,
+				'default_columns' => 5,
+				'max_columns' => 3,
 			),
 		)
 	);
@@ -240,15 +238,16 @@ if (!function_exists('ecommerce_delejos_woocommerce_header_cart')) {
 }
 
 //Woocomerce Product Loop Tweks Classs
+
 // Add a custom class to the <li> element containing the product item
 function custom_add_class_to_shop_loop_item($classes, $product_id)
 {
-	if(!is_singular('product')){
-	// Add your custom class here
-	$custom_class = 'my-custom-li-class col-md-4';
+	if (!is_singular('product')) {
+		// Add your custom class here
+		$custom_class = 'my-custom-li-class col-md-4';
 
-	// Add the custom class to the classes array
-	$classes[] = $custom_class;
+		// Add the custom class to the classes array
+		$classes[] = $custom_class;
 
 	}
 	return $classes;
@@ -279,56 +278,59 @@ if (!function_exists('loop_columns')) {
 	}
 }
 
-
 //Hidding Related PRoducts in SInfgle Product Page
 
-	remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
+remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
 
 //hidding Reviews 
-	function hide_product_reviews_tab($tabs) {
-		// Remove the "Reviews" tab
-		unset($tabs['reviews']);
-	
-		return $tabs;
-	}
-	add_filter('woocommerce_product_tabs', 'hide_product_reviews_tab');
+function hide_product_reviews_tab($tabs)
+{
+	// Remove the "Reviews" tab
+	unset($tabs['reviews']);
 
-	
-
+	return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'hide_product_reviews_tab');
 
 
-	//Product Single Changes
+//Product Single Changes	
+function add_custom_class_before_single_product_summary()
+{
+	echo '<div class="custom-class-before-summary row">';
+}
+add_action('woocommerce_before_single_product_summary', 'add_custom_class_before_single_product_summary', 1);
 
-	function add_custom_class_to_entry_summary_container() {
-		echo '<div class="summary custom-summary">';
-	}
-	add_action('woocommerce_single_product_summary', 'add_custom_class_to_entry_summary_container', 1);
-	
-
-	
-	function add_custom_class_before_single_product_summary() {
-		echo '<div class="custom-class-before-summary row">';
-	}
-	add_action('woocommerce_before_single_product_summary', 'add_custom_class_before_single_product_summary', 1);
-	
-	function close_custom_class_before_single_product_summary() {
-		echo '</div>';
-	}
-	add_action('woocommerce_after_single_product_summary', 'close_custom_class_before_single_product_summary', 99);
+function close_custom_class_before_single_product_summary()
+{
+	echo '</div>';
+}
+add_action('woocommerce_after_single_product_summary', 'close_custom_class_before_single_product_summary', 99);
 
 
 
+//Adding Custom Class to Gallery COntainer Single Product Page
 
+function add_custom_class_to_product_gallery_container()
+{
+	?>
+	<script type="text/javascript">
+		jQuery(document).ready(function ($) {
+			// Add your custom class to the product gallery thumbnail container
+			$('.single-product div.product .images').addClass('delejos-gallery-container col-md-6 justify-content-center align-items-center d-flex');
+		});
+	</script>
 
-	function add_custom_class_to_product_gallery_container() {
-		?>
-		<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				// Add your custom class to the product gallery thumbnail container
-				$('.single-product div.product .images').addClass('custom-gallery-container col-md-6');
-			});
-		</script>
-		<?php
-	}
-	add_action('woocommerce_before_single_product_summary', 'add_custom_class_to_product_gallery_container');
-	
+	<?php
+}
+add_action('woocommerce_before_single_product_summary', 'add_custom_class_to_product_gallery_container');
+
+/**
+ * @snippet       Move product tabs beside the product image - WooCommerce
+ * @how-to        Get CustomizeWoo.com FREE
+ * @author        Rodolfo Melogli
+ * @testedwith    WooCommerce 7
+ * @donate $9     https://businessbloomer.com/bloomer-armada/
+ */
+
+remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10);
+add_action('woocommerce_single_product_summary', 'woocommerce_output_product_data_tabs', 60);

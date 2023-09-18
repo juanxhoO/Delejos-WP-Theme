@@ -21,27 +21,6 @@ if (!defined('ABSPATH')) {
 
 get_header('shop'); ?>
 
-
-<header class="entry-header">
-    <div class="top_menu container d-flex flex-wrap">
-        <ul class="nav me-auto">
-            <li class="nav-item"><a href="">+1-646-597-8034 </a></li>
-
-            <li class="nav-item"><a href="">+1-646-597-8034 </a></li>
-
-            <li class="nav-item"><a href="">+1-646-597-8034 </a></li>
-        </ul>
-
-        <div>
-            currency exchanger
-        </div>
-        <div>
-
-            Languaje Siwtch
-        </div>
-    </div>
-</header><!-- .entry-header -->
-
 <?php
 /**
  * woocommerce_before_main_content hook.
@@ -53,16 +32,14 @@ do_action('woocommerce_before_main_content');
 ?>
 
 <div class="container">
-
-
-    <div class="navbar navbar-expand-lg navbar-light bg-light ">
+    <div class="navbar navbar-expand-lg category-navbar">
         <div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
             <?php
             wp_nav_menu(
                 array(
                     'theme_location' => 'category-menu',
                     // Change this to your menu location
-                    'menu_class' => 'navbar-nav ml-auto',
+                    'menu_class' => 'navbar-nav ml-auto justify-content-between',
                     'walker' => new Bootstrap_Nav_Walker(),
                 )
             );
@@ -75,30 +52,32 @@ do_action('woocommerce_before_main_content');
 
         <?php wc_get_template_part('content', 'single-product'); ?>
 
-    <?php endwhile; // end of the loop. ?>
+    <?php endwhile; // end of the loop.
+    
+    ?>
 
+    
+</div>
 
-    <div>
+<?php
+/**
+ * woocommerce_after_main_content hook.
+ *
+ * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
+ */
+do_action('woocommerce_after_main_content');
+?>
 
-        <?php
-        /**
-         * woocommerce_after_main_content hook.
-         *
-         * @hooked woocommerce_output_content_wrapper_end - 10 (outputs closing divs for the content)
-         */
-        do_action('woocommerce_after_main_content');
-        ?>
+<?php
+/**
+ * woocommerce_sidebar hook.
+ *
+ * @hooked woocommerce_get_sidebar - 10
+ */
+do_action('woocommerce_sidebar');
+?>
 
-        <?php
-        /**
-         * woocommerce_sidebar hook.
-         *
-         * @hooked woocommerce_get_sidebar - 10
-         */
-        do_action('woocommerce_sidebar');
-        ?>
+<?php
+get_footer('shop');
 
-        <?php
-        get_footer('shop');
-
-        /* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */
+/* Omit closing PHP tag at the end of PHP files to avoid "headers already sent" issues. */
