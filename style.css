@@ -414,6 +414,7 @@ h3,
 h4,
 h5,
 h6 {
+	font-weight: bold;
 	clear: both;
 }
 
@@ -988,9 +989,7 @@ textarea {
 }
 
 .custom-class-before-summary .entry-summary {
-	width: 50%;
-	text-align: center
-	;
+	text-align: center;
 }
 
 /* Top MEnu Style */

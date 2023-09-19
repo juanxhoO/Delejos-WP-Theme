@@ -334,3 +334,31 @@ add_action('woocommerce_before_single_product_summary', 'add_custom_class_to_pro
 
 remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10);
 add_action('woocommerce_single_product_summary', 'woocommerce_output_product_data_tabs', 60);
+
+function custom_entry_summary_class($classes) {
+    $classes[] = 'your-custom-class'; // Replace 'your-custom-class' with the class name you want to add.
+    return $classes;
+}
+
+add_filter('woocommerce_post_class', 'custom_entry_summary_class');
+
+
+
+//Single Product Page
+
+//Product Single Changes	
+function add_custom_class_before_product_add_cart_button()
+{
+	echo '<div class="custom-class-before-summary row">';
+}
+add_action('woocommerce_before_single_product_summary', 'add_custom_class_before_product_add_cart_button', 1);
+
+function close_custom_class_before_product_add_cart_button()
+{
+	echo '</div>';
+}
+add_action('woocommerce_after_single_product_summary', 'close_custom_class_before_product_add_cart_button', 99);
+
+
+
+// Cart Page
