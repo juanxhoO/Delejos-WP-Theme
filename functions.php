@@ -435,3 +435,61 @@ if (class_exists('WooCommerce')) {
 }
 
 
+
+// Add first name field
+add_filter('woocommerce_register_form_start', 'add_first_name_field');
+
+function add_first_name_field() {
+    echo '<p class="form-row form-row-first">
+            <label for="reg_first_name">' . __('First Name', 'woocommerce') . '<span class="required">*</span></label>
+            <input type="text" class="input-text" name="first_name" id="reg_first_name" value="' . esc_attr($_POST['first_name']) . '" required/>
+          </p>';
+}
+
+// Add last name field
+add_filter('woocommerce_register_form_start', 'add_last_name_field');
+
+function add_last_name_field() {
+    echo '<p class="form-row form-row-last">
+            <label for="reg_last_name">' . __('Last Name', 'woocommerce') . '<span class="required">*</span></label>
+            <input type="text" class="input-text" name="last_name" id="reg_last_name" value="' . esc_attr($_POST['last_name']) . '" required/>
+          </p>';
+}
+
+
+// add_filter('woocommerce_register_form_start', 'add_phone_number_field');
+
+// function add_phone_number_field() {
+//     echo '<p class="form-row form-row-last">
+//             <label for="reg_last_name">' . __('Last Name', 'woocommerce') . '<span class="required">*</span></label>
+//             <input type="text" class="input-text" name="last_name" id="reg_last_name" value="' . esc_attr($_POST['last_name']) . '" required/>
+//           </p>';
+// }
+
+
+
+// Save first name and last name when registering
+add_action('woocommerce_created_customer', 'save_first_last_name_fields');
+
+function save_first_last_name_fields($customer_id) {
+    if (isset($_POST['first_name'])) {
+        update_user_meta($customer_id, 'first_name', sanitize_text_field($_POST['first_name']));
+    }
+    if (isset($_POST['last_name'])) {
+        update_user_meta($customer_id, 'last_name', sanitize_text_field($_POST['last_name']));
+    }
+}
+
+
+
+// Save custom fields in the account details
+add_action('woocommerce_save_account_details', 'save_custom_account_fields');
+
+function save_custom_account_fields($user_id) {
+    if (isset($_POST['first_name'])) {
+        update_user_meta($user_id, 'first_name', sanitize_text_field($_POST['first_name']));
+    }
+    if (isset($_POST['last_name'])) {
+        update_user_meta($user_id, 'last_name', sanitize_text_field($_POST['last_name']));
+    }
+}
