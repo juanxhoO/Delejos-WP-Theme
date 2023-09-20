@@ -44,12 +44,29 @@ get_header();
 		</nav>
 	</div>
 	<div class="d-flex align-items-center cart-container">
-			<?php
-			if (function_exists('ecommerce_delejos_woocommerce_header_cart')) {
-				ecommerce_delejos_woocommerce_header_cart();
-			}
-			?>
-		</div>
+		<?php
+		if (is_user_logged_in()) { ?>
+			<i class="fa-solid fa-user"></i><a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+				title="<?php _e('My Account', 'woothemes'); ?>">
+				<?php _e('My Account', 'woothemes'); ?>
+			</a>
+		<?php } else { ?>
+			<i class="fa-solid fa-user"></i><a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+				title="<?php _e('Login / Register', 'woothemes'); ?>">
+				<?php _e('Login / Register', 'woothemes'); ?>
+			</a>
+		<?php } ?>
+		
+		<i class="fa-solid fa-cart-shopping"></i>
+		<?php
+
+
+			
+		if (function_exists('ecommerce_delejos_woocommerce_header_cart')) {
+			ecommerce_delejos_woocommerce_header_cart();
+		}
+		?>
+	</div>
 </div>
 
 

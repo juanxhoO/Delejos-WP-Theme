@@ -362,3 +362,55 @@ add_action('woocommerce_after_single_product_summary', 'close_custom_class_befor
 
 
 // Cart Page
+
+
+
+
+//Checkout
+
+/**
+ * @snippet       Close Ship to Different Address @ Checkout Page
+ * @how-to        Get CustomizeWoo.com FREE
+ * @author        Rodolfo Melogli
+ * @testedwith    WooCommerce 3.9
+ * @donate $9     https://businessbloomer.com/bloomer-armada/
+ */
+ 
+ add_filter( 'woocommerce_ship_to_different_address_checked', '__return_true' );
+
+ //Login Register Page
+// Add a custom opening div before the customer_login div
+add_action('woocommerce_before_customer_login_form', 'add_custom_div_before_customer_login');
+
+function add_custom_div_before_customer_login() {
+    echo '<div class="custom-wrapper">';
+}
+
+// Add a closing div after the customer_login div
+add_action('woocommerce_after_customer_login_form', 'close_custom_div_after_customer_login');
+
+function close_custom_div_after_customer_login() {
+    echo '</div>';
+}
+
+
+/**
+ * @snippet       Show Additional Content on the My Account Page
+ * @how-to        Get CustomizeWoo.com FREE
+ * @author        Rodolfo Melogli (improved by Tom Lambie)
+ * @compatible    WooCommerce 4.1
+ * @donate $9     https://businessbloomer.com/bloomer-armada/
+ */
+  
+ add_action( 'woocommerce_login_form_start','bbloomer_add_login_text' );
+  
+ function bbloomer_add_login_text() {
+	if ( is_checkout() ) return;
+	echo '<h3 class="bb-login-subtitle">Registered Customers</h3><p class="bb-login-description">If you have an account with us, log in using your email address.</p>';
+ }
+   
+ add_action( 'woocommerce_register_form_start','bbloomer_add_reg_text' );
+   
+ function bbloomer_add_reg_text() {
+	echo '<h3 class="bb-register-subtitle">New Customers</h3><p class="bb-register-description">By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</p>';
+ }

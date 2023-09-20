@@ -33,18 +33,24 @@
 		<header>
 			<div class="top_menu container d-flex flex-wrap">
 				<ul class="nav me-auto">
-					<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
-					<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
-					<li class="nav-item"><a href="">+1-646-597-8034 </a></li>
+					<li class="nav-item"><i class="fa-solid fa-phone"></i>
+						<a href="">+1-646-597-8034 </a>
+					</li>
+					<li class="nav-item"><i class="fa-brands fa-whatsapp"></i><a href="">+1-646-597-8034 </a></li>
+					<li class="nav-item"><i class="fa-solid fa-envelope"></i><a
+							mailto="info@delejos.com">info@delejos.com</a></li>
 					<li class="nav-item">
 						<?php if (!is_front_page()) {
 							if (is_user_logged_in()) { ?>
-								<a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+
+								<i class="fa-solid fa-user"></i><a
+									href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
 									title="<?php _e('My Account', 'woothemes'); ?>">
 									<?php _e('My Account', 'woothemes'); ?>
 								</a>
 							<?php } else { ?>
-								<a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+								<i class="fa-solid fa-user"></i><a
+									href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
 									title="<?php _e('Login / Register', 'woothemes'); ?>">
 									<?php _e('Login / Register', 'woothemes'); ?>
 								</a>
@@ -54,8 +60,11 @@
 				</ul>
 
 				<div class="d-flex align-items-center cart-container">
+
 					<?php
 					if (!is_front_page()) {
+
+						echo ("<i class='fa-solid fa-cart-shopping'></i>");
 						if (function_exists('ecommerce_delejos_woocommerce_header_cart')) {
 							ecommerce_delejos_woocommerce_header_cart();
 						}
@@ -86,7 +95,7 @@
 						endif; ?>
 					</div><!-- .site-branding -->
 					<div class="d-flex align-items-center">
-				
+
 					</div>
 				</div>
 			<?php } ?>

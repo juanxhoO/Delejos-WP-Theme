@@ -18,12 +18,29 @@
 defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_cart'); ?>
-<div class="container pepito">
+<div class="navbar navbar-expand-lg category-navbar">
+	<div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
+		<?php
+		wp_nav_menu(
+			array(
+				'theme_location' => 'category-menu',
+				// Change this to your menu location
+				'menu_class' => 'navbar-nav d-flex justify-content-between',
+				'walker' => new Bootstrap_Nav_Walker(),
+			)
+		);
+		?>
+	</div>
+</div>
+<div class="container delejos-container-cart">
+
 	<form class="woocommerce-cart-form" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">
 		<?php do_action('woocommerce_before_cart_table'); ?>
 
 		<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
-			<thead>
+			
+			
+		<thead p="2">
 				<tr>
 					<th class="product-remove"><span class="screen-reader-text">
 							<?php esc_html_e('Remove item', 'woocommerce'); ?>
