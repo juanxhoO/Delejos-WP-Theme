@@ -344,34 +344,10 @@ function custom_entry_summary_class($classes)
 add_filter('woocommerce_post_class', 'custom_entry_summary_class');
 
 
-
-//Single Product Page
-
-//Product Single Changes	
-function add_custom_class_before_product_add_cart_button()
-{
-	echo '<div class="custom-class-before-summary row">';
-}
-add_action('woocommerce_before_single_product_summary', 'add_custom_class_before_product_add_cart_button', 1);
-
-function close_custom_class_before_product_add_cart_button()
-{
-	echo '</div>';
-}
-add_action('woocommerce_after_single_product_summary', 'close_custom_class_before_product_add_cart_button', 99);
-
-
-
-// Cart Page
-
-
-
-
 //Checkout
 
 /**
- * @snippet       Close Ship to Different Address @ Checkout Page
- * @how-to        Get CustomizeWoo.com FREE
+ * @snippet       Close Ship to Different Address @ Checkout Page* @how-to        Get CustomizeWoo.com FREE
  * @author        Rodolfo Melogli
  * @testedwith    WooCommerce 3.9
  * @donate $9     https://businessbloomer.com/bloomer-armada/
@@ -379,13 +355,196 @@ add_action('woocommerce_after_single_product_summary', 'close_custom_class_befor
 
 add_filter('woocommerce_ship_to_different_address_checked', '__return_true');
 
-//My Account Page
+
+
+//My Account Page and Register Form
+
+// Add first name field
+add_filter('woocommerce_register_form_start', 'add_first_name_field');
+
+function add_first_name_field()
+{
+	echo '<p class="form-row form-row-wide">
+            <label for="reg_first_name">' . __('First Name', 'woocommerce') . '<span class="required">*</span></label>
+            <input type="text" class="input-text" name="first_name" id="reg_first_name" value="' . esc_attr($_POST['first_name']) . '" required/>
+          </p>';
+}
+
+// Add last name field
+add_filter('woocommerce_register_form_start', 'add_last_name_field');
+
+function add_last_name_field()
+{
+	echo '<p class="form-row form-row-wide">
+            <label for="reg_last_name">' . __('Last Name', 'woocommerce') . '<span class="required">*</span></label>
+            <input type="text" class="input-text" name="last_name" id="reg_last_name" value="' . esc_attr($_POST['last_name']) . '" required/>
+          </p>';
+}
+
+
+add_filter('woocommerce_register_form_start', 'add_phone_number_field');
+
+function add_phone_number_field()
+{
+	echo '<p class="form-row form-row-wide">
+            <label for="reg_phone">' . __('Phone Number', 'woocommerce') . '<span class="required">*</span></label>
+            <input type="tel" class="input-text" name="phone" id="reg_phone" value="' . esc_attr($_POST['phone']) . '" required/>
+          </p>';
+}
 
 
 
-//Adding Extr Field to Register Form
+add_filter('woocommerce_register_form_start', 'add_country_selector_field');
+
+function add_country_selector_field()
+{
+	$countries = WC()->countries->get_countries();
+
+	echo '<p class="form-row form-row-wide">
+            <label for="reg_country">' . __('Country', 'woocommerce') . '<span class="required">*</span></label>
+            <select class="country_select" name="country" id="reg_country" required>';
+
+	foreach ($countries as $key => $value) {
+		echo '<option value="' . esc_attr($key) . '">' . esc_html($value) . '</option>';
+	}
+
+	echo '</select></p>';
+}
 
 
 
 
+// Save first name and last name when registering
+add_action('woocommerce_created_customer', 'save_first_last_name_fields');
 
+function save_first_last_name_fields($customer_id)
+{
+	if (isset($_POST['first_name'])) {
+		update_user_meta($customer_id, 'first_name', sanitize_text_field($_POST['first_name']));
+	}
+	if (isset($_POST['last_name'])) {
+		update_user_meta($customer_id, 'last_name', sanitize_text_field($_POST['last_name']));
+	}
+
+	if (isset($_POST['phone'])) {
+		update_user_meta($customer_id, 'phone', sanitize_text_field($_POST['phone']));
+	}
+}
+
+// Save custom fields in the account details
+add_action('woocommerce_save_account_details', 'save_custom_account_fields');
+
+function save_custom_account_fields($user_id)
+{
+
+	if (isset($_POST['phone'])) {
+		update_user_meta($user_id, 'phone', sanitize_text_field($_POST['phone']));
+	}
+
+
+	if (isset($_POST['country'])) {
+		update_user_meta($user_id, 'country', sanitize_text_field($_POST['country']));
+	}
+
+}
+
+add_action('woocommerce_edit_account_form_start', 'display_custom_account_fields');
+
+function display_custom_account_fields()
+{
+	$user = wp_get_current_user();
+	$user_id = $user->ID;
+	$phone_value = get_user_meta($user_id, 'phone', true);
+	?>
+
+	<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+		<label for="phone">
+			<?php _e('Phone Number', 'woocommerce'); ?>
+			<span class="required">*</span>
+		</label>
+		<input required type="tel" class="woocommerce-Input woocommerce-Input--text input-text" name="phone" id="phone"
+			value="<?php echo esc_attr($phone_value); ?>" />
+	</p>
+	<?php
+}
+
+
+add_action('woocommerce_edit_account_form_start', 'add_country_selector_field_to_account');
+
+function add_country_selector_field_to_account()
+{
+
+	$user = wp_get_current_user();
+	$user_id = $user->ID;
+	$selected_country = get_user_meta($user_id, 'country', true); // Get the user's selected country (if previously saved)
+	$countries = WC()->countries->get_countries();
+
+	echo '<p class="form-row form-row-wide">
+            <label for="country">' . __('Country', 'woocommerce') . '<span class="required">*</span></label>
+            <select class="country_select" name="country" id="country" required>';
+
+	foreach ($countries as $key => $value) {
+		$selected = selected($selected_country, $key, false); // Add 'selected' attribute to the currently selected country
+		echo '<option value="' . esc_attr($key) . '" ' . $selected . '>' . esc_html($value) . '</option>';
+	}
+
+	echo '</select></p>';
+}
+
+add_filter('woocommerce_register_form', 'add_confirm_password_field');
+
+function add_confirm_password_field()
+{
+	?>
+	<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+		<label for="reg_confirm_password">
+			<?php _e('Confirm Password', 'woocommerce'); ?><span class="required">*</span>
+		</label>
+		<input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="confirm_password"
+			id="reg_confirm_password" required />
+	</p>
+	<?php
+}
+function enqueue_password_confirmation_script()
+{
+	wp_enqueue_script('password-confirmation', get_template_directory_uri() . '/js/password-confirmation.js', array('jquery'), '1.0', true);
+}
+
+add_action('wp_enqueue_scripts', 'enqueue_password_confirmation_script');
+
+
+add_filter('woocommerce_registration_errors', 'custom_password_confirmation_validation', 10, 3);
+
+function custom_password_confirmation_validation($errors, $username, $password)
+{
+	if ($_POST['password'] !== $_POST['confirm_password']) {
+		$errors->add('password_mismatch', __('Passwords do not match.', 'woocommerce'));
+	}
+	return $errors;
+}
+
+//Adding bootstrap classes to checkout fields
+
+add_filter('woocommerce_checkout_fields', 'addBootstrapToCheckoutFields');
+function addBootstrapToCheckoutFields($fields)
+{
+	foreach ($fields as &$fieldset) {
+		foreach ($fieldset as &$field) {
+			// if you want to add the form-group class around the label and the input
+			$field['class'][] = 'form-group col-md-6 col-sm-12';
+
+			// add form-control to the actual input
+			$field['input_class'][] = 'form-control col-md-6 col-sm-12';
+		}
+	}
+	return $fields;
+}
+
+
+
+function add_custom_class_to_billing_wrapper($fields) {
+    $fields = '<div class="my-custom-class">' . $fields . '</div>';
+    return $fields;
+}
+
+add_action('woocommerce_checkout_billing', 'add_custom_class_to_billing_wrapper');

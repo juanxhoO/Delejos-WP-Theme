@@ -33,13 +33,9 @@ do_action('woocommerce_before_cart'); ?>
 	</div>
 </div>
 <div class="container delejos-container-cart">
-
 	<form class="woocommerce-cart-form" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">
 		<?php do_action('woocommerce_before_cart_table'); ?>
-
 		<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
-			
-			
 		<thead p="2">
 				<tr>
 					<th class="product-remove"><span class="screen-reader-text">

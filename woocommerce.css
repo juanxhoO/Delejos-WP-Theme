@@ -247,7 +247,7 @@ ul.products li.product .button {
 /**
  * Checkout
  */
-@media screen and (min-width: 768px) {
+/* @media screen and (min-width: 768px) {
 
 
 	.col2-set .form-row-last {
@@ -259,7 +259,7 @@ ul.products li.product .button {
 	.col2-set .form-row-last {
 		width: 48.1%;
 	}
-}
+} */
 
 /**
  * General WooCommerce components
