@@ -18,17 +18,17 @@
  */
 function ecommerce_delejos_woocommerce_setup()
 {
-	// add_theme_support(
-	// 	'woocommerce',
-	// 	array(
-	// 		'single_image_width' => 300,
-	// 		'product_grid' => array(
-	// 			'default_rows' => 3,
-	// 			'default_columns' => 5,
-	// 			'max_columns' => 3,
-	// 		),
-	// 	)
-	// );
+	add_theme_support(
+		'woocommerce',
+		array(
+			'single_image_width' => 300,
+			'product_grid' => array(
+				'default_rows' => 3,
+				'default_columns' => 5,
+				'max_columns' => 3,
+			),
+		)
+	);
 	add_theme_support('wc-product-gallery-zoom');
 	add_theme_support('wc-product-gallery-lightbox');
 	add_theme_support('wc-product-gallery-slider');
@@ -548,3 +548,32 @@ function add_custom_class_to_billing_wrapper($fields) {
 }
 
 add_action('woocommerce_checkout_billing', 'add_custom_class_to_billing_wrapper');
+
+
+
+
+//addinbg wrapper for billing form
+
+function custom_div_before_billing_form() {
+    echo '<div class="delejos_billing_fields_container">';
+}
+
+function custom_div_after_billing_form() {
+    echo '</div>';
+}
+
+add_action('woocommerce_before_checkout_billing_form', 'custom_div_before_billing_form');
+add_action('woocommerce_after_checkout_billing_form', 'custom_div_after_billing_form');
+
+
+
+function custom_div_before_shipping_form() {
+    echo '<div class="delejos_shipping_fields_container">';
+}
+
+function custom_div_after_shipping_form() {
+    echo '</div>';
+}
+
+add_action('woocommerce_before_checkout_shipping_form', 'custom_div_before_shipping_form');
+add_action('woocommerce_after_checkout_shipping_form', 'custom_div_after_shipping_form');

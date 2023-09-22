@@ -10,7 +10,7 @@
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 }
-define('_S_VERSION', '1.3.222222222');
+define('_S_VERSION', '1.3.222222222232332323232');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -24,7 +24,8 @@ function ecommerce_delejos_setup()
 	/*
 	 * Make theme available for translation.
 	 * Translations can be filed in the /languages/ directory.
-	 * If you're building a theme based on Delejos_Theme, use a find and replace
+	 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+    padding: 40px 10%;nd and replace
 	 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
 	 */
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');

@@ -461,7 +461,7 @@ p.no-comments {
 .woocommerce-info,
 .woocommerce-noreviews,
 p.no-comments {
-	background-color: #3d9cd2;
+	background-color: #f5edf3;
 }
 
 .woocommerce-error {
@@ -486,7 +486,9 @@ p.no-comments {
 	 */
 	.site-header-cart .widget_shopping_cart {
 		position: absolute;
+		width: 320px;
 		top: 100%;
+		background-color: #ffffff;
 		width: 100%;
 		z-index: 999999;
 		left: -999em;
@@ -628,4 +630,81 @@ p.no-comments {
 	max-width: 180px;
     margin: 0 auto;
     display: block;
+}
+
+
+/* Checkout Custom CSS */
+
+
+.woocommerce-billing-fields,.woocommerce-shipping-fields{
+	margin-top: 40px;
+}
+
+
+.woocommerce-billing-fields h3, .woocommerce-shipping-fields h3{
+	background: #f5edf3;
+    margin: 0;
+    padding: 10px 40px
+
+}
+
+
+.delejos_billing_fields_container, .delejos_shipping_fields_container{
+	border: 1px solid #ccc;
+    padding: 40px 10%;
+}
+
+#order_review_heading{
+	background: #f5edf3;
+    margin: 0;
+    padding: 10px 40px
+
+}
+
+
+
+#order_review{
+	padding: 50px 10%;
+	border: 1px solid #ccc;
+}
+
+
+
+
+
+/* Pdocut Loop Page */
+
+.added_to_cart.wc-forward{
+    display: inline-block;
+    border: 2px solid #000000;
+    color: #000000;
+    font-weight: bold;
+    clear: both;
+	margin-left: 10px;
+    padding: 10px;
+    border-radius: 0.25em;
+}
+
+
+
+
+/* Minicart Custom CSS */
+
+
+.mini_cart_item{
+	display: block;
+	text-align: center;
+}
+
+
+.mini_cart_item img{
+    height: auto;
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+
+.widget_shopping_cart{
+	width: 320px !important;
 }
