@@ -551,9 +551,10 @@ function addBootstrapToCheckoutFields($fields)
 
 
 
-function add_custom_class_to_billing_wrapper($fields) {
-    $fields = '<div class="my-custom-class">' . $fields . '</div>';
-    return $fields;
+function add_custom_class_to_billing_wrapper($fields)
+{
+	$fields = '<div class="my-custom-class">' . $fields . '</div>';
+	return $fields;
 }
 
 add_action('woocommerce_checkout_billing', 'add_custom_class_to_billing_wrapper');
@@ -563,12 +564,14 @@ add_action('woocommerce_checkout_billing', 'add_custom_class_to_billing_wrapper'
 
 //addinbg wrapper for billing form
 
-function custom_div_before_billing_form() {
-    echo '<div class="delejos_billing_fields_container">';
+function custom_div_before_billing_form()
+{
+	echo '<div class="delejos_billing_fields_container">';
 }
 
-function custom_div_after_billing_form() {
-    echo '</div>';
+function custom_div_after_billing_form()
+{
+	echo '</div>';
 }
 
 add_action('woocommerce_before_checkout_billing_form', 'custom_div_before_billing_form');
@@ -576,13 +579,17 @@ add_action('woocommerce_after_checkout_billing_form', 'custom_div_after_billing_
 
 
 
-function custom_div_before_shipping_form() {
-    echo '<div class="delejos_shipping_fields_container">';
+function custom_div_before_shipping_form()
+{
+	echo '<div class="delejos_shipping_fields_container">';
 }
 
-function custom_div_after_shipping_form() {
-    echo '</div>';
+function custom_div_after_shipping_form()
+{
+	echo '</div>';
 }
 
 add_action('woocommerce_before_checkout_shipping_form', 'custom_div_before_shipping_form');
 add_action('woocommerce_after_checkout_shipping_form', 'custom_div_after_shipping_form');
+
+
