@@ -242,9 +242,18 @@ if (!function_exists('ecommerce_delejos_woocommerce_header_cart')) {
 // Add a custom class to the <li> element containing the product item
 function custom_add_class_to_shop_loop_item($classes, $product_id)
 {
-	if (!is_singular('product')) {
+	if (!is_singular('product') && !(is_cart() || is_checkout())) {
 		// Add your custom class here
 		$custom_class = 'my-custom-li-class col-md-4';
+
+		// Add the custom class to the classes array
+		$classes[] = $custom_class;
+
+	}
+
+	else{
+		// Add your custom class here
+		$custom_class = 'my-custom-li-class col-md-3 col-sm-6';
 
 		// Add the custom class to the classes array
 		$classes[] = $custom_class;
@@ -332,16 +341,16 @@ add_action('woocommerce_before_single_product_summary', 'add_custom_class_to_pro
  * @donate $9     https://businessbloomer.com/bloomer-armada/
  */
 
-remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10);
-add_action('woocommerce_single_product_summary', 'woocommerce_output_product_data_tabs', 60);
+// remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10);
+// add_action('woocommerce_single_product_summary', 'woocommerce_output_product_data_tabs', 60);
 
-function custom_entry_summary_class($classes)
-{
-	$classes[] = 'your-custom-class'; // Replace 'your-custom-class' with the class name you want to add.
-	return $classes;
-}
+// function custom_entry_summary_class($classes)
+// {
+// 	$classes[] = 'your-custom-class'; // Replace 'your-custom-class' with the class name you want to add.
+// 	return $classes;
+// }
 
-add_filter('woocommerce_post_class', 'custom_entry_summary_class');
+// add_filter('woocommerce_post_class', 'custom_entry_summary_class');
 
 
 //Checkout

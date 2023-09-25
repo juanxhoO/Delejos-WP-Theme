@@ -33,10 +33,38 @@ do_action('woocommerce_before_cart'); ?>
 	</div>
 </div>
 <div class="container delejos-container-cart">
+
+
+	<?php
+
+	// // Get the specific category ID or slug
+	// $category_id = 'extra-products';
+
+	// // Query products from the specified category
+	// $args = array(
+	// 	'post_type' => 'product',
+	// 	'posts_per_page' => -1,
+	// 	'product_cat' => $category_id,
+	// );
+	// $query = new WP_Query($args);
+
+	// // Check if there are products in the category
+	// if ($query->have_posts()) {
+	// 	echo '<h2>Products from the Specific Category</h2>';
+	// 	while ($query->have_posts()) {
+	// 		$query->the_post();
+	// 		// Display product information here
+	// 		wc_get_template_part('content', 'product');
+	// 	}
+	// 	wp_reset_postdata();
+	// }
+
+	?>
+
 	<form class="woocommerce-cart-form" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">
 		<?php do_action('woocommerce_before_cart_table'); ?>
 		<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
-		<thead p="2">
+			<thead p="2">
 				<tr>
 					<th class="product-remove"><span class="screen-reader-text">
 							<?php esc_html_e('Remove item', 'woocommerce'); ?>
