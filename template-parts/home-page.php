@@ -25,24 +25,7 @@ get_header();
 		endif; ?>
 	</div><!-- .site-branding -->
 
-	<?php
-	// Get the list of allowed countries for various purposes (e.g., shipping and billing).
-	$allowed_countries = WC()->countries->get_allowed_countries();	
 
-	echo '<div id="my_custom_countries_field">';
-
-    woocommerce_form_field('my_country_field', array(
-    'type'       => 'select',
-    'class'      => array( 'chzn-drop' ),
-    'label'      => __('Select a country'),
-    'placeholder'    => __('Enter something'),
-    'options'    => $allowed_countries
-    )
-    );
-    echo '</div>';
-
-	//	var_dump(get_allowed_countries());
-	?>
 	<div class="d-flex">
 		<!-- This div will vertically align the content -->
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -87,6 +70,44 @@ get_header();
 		?>
 	</div>
 </div>
+
+<!-- Hero Element for Displaying Country City and Ocassion  -->
+
+
+
+<div class="px-4 py-5 my-5 text-center">
+	<h1 class="display-5 fw-bold text-body-emphasis">Centered hero</h1>
+	<div class="col-lg-6 mx-auto">
+
+		<?php
+		// Get the list of allowed countries for various purposes (e.g., shipping and billing).
+		$allowed_countries = WC()->countries->get_allowed_countries();
+
+		echo '<div id="my_custom_countries_field">';
+
+		woocommerce_form_field(
+			'my_country_field',
+			array(
+				'type' => 'select',
+				'required' => true,
+				'class' => array('chzn'),
+				'input_class' => array('form-select form-select-lg'),
+				'label' => 'Select a country',
+				'placeholder' => __('Select Country'),
+				'options' => $allowed_countries
+			)
+		);
+		echo '</div>';
+
+		//	var_dump(get_allowed_countries());
+		?>
+	</div>
+
+	<div class="col-lg-6 mx-auto">
+
+	</div>
+</div>
+
 
 
 <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">

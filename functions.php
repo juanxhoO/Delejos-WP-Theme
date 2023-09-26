@@ -435,3 +435,24 @@ if (defined('JETPACK__VERSION')) {
 if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
+
+
+function populate_cities_dropdown() {
+    // Get the selected country from the POST data (assuming your form uses POST method)
+    if (isset($_POST['my_country_field'])) {
+        $selected_country = sanitize_text_field($_POST['my_country_field']);
+
+        // Query your database or perform any logic to retrieve cities based on the selected country.
+        // Replace the following with your own data retrieval logic.
+        $cities = get_cities_based_on_country($selected_country);
+
+        // Output the cities as options for the dropdown
+        if ($cities) {
+            foreach ($cities as $city) {
+                echo '<option value="' . esc_attr($city) . '">' . esc_html($city) . '</option>';
+            }
+        }
+    }
+
+    die(); // This is necessary to stop WordPress from returning extra content.
+}
