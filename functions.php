@@ -435,36 +435,3 @@ if (defined('JETPACK__VERSION')) {
 if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
-
-
-
-
-//Adding Products form Extras to the cart Page
-
-function display_products_from_specific_category_in_cart() {
-    // Get the specific category ID or slug
-    $category_id = 'extra-products';
-
-    // Query products from the specified category
-    $args = array(
-        'post_type' => 'product',
-        'posts_per_page' => -1,
-        'product_cat' => $category_id,
-    );
-    $query = new WP_Query($args);
-
-    // Check if there are products in the category
-    if ($query->have_posts()) {
-
-		echo '<div class="row extra_aditionals_container">';
-        echo '<h2>Aditionals Products</h2>';
-        while ($query->have_posts()) {
-            $query->the_post();
-            // Display product information here
-            wc_get_template_part('content', 'product');
-        }
-        wp_reset_postdata();
-		echo'</div>';
-	}
-}
-add_action('woocommerce_before_cart_table', 'display_products_from_specific_category_in_cart');

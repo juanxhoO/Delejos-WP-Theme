@@ -745,13 +745,3 @@ text-align: right !important;
 	border-radius: 15px;
     font-style: normal;
 }
-
-.extra_aditionals_container .product {
-	text-align: center;
-}
-
-.extra_aditionals_container .product img{
-	max-width: 100px;
-	display: block;
-	margin: 0 auto;
-}
