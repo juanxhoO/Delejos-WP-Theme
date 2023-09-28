@@ -22,12 +22,12 @@ define('_S_VERSION', '1.3.422');
 function ecommerce_delejos_setup()
 {
 	/*
-	 * Make theme available for translation.
-	 * Translations can be filed in the /languages/ directory.
-	 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-    padding: 40px 10%;nd and replace
-	 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
-	 */
+											* Make theme available for translation.
+											* Translations can be filed in the /languages/ directory.
+											* If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+										   padding: 40px 10%;nd and replace
+											* to change 'ecommerce-delejos' to the name of your theme in all the template files.
+											*/
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -435,24 +435,133 @@ if (defined('JETPACK__VERSION')) {
 if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
+function create_custom_city_table()
+{
+	global $wpdb;
 
+	$table_name = $wpdb->prefix . 'custom_cities';
 
-function populate_cities_dropdown() {
-    // Get the selected country from the POST data (assuming your form uses POST method)
-    if (isset($_POST['my_country_field'])) {
-        $selected_country = sanitize_text_field($_POST['my_country_field']);
+	// Check if the table already exists
+	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 
-        // Query your database or perform any logic to retrieve cities based on the selected country.
-        // Replace the following with your own data retrieval logic.
-        $cities = get_cities_based_on_country($selected_country);
+		echo ("tabe created");
+		$sql = "CREATE TABLE $table_name (
+            id INT NOT NULL AUTO_INCREMENT,
+            city_name VARCHAR(255) NOT NULL,
+            country_code VARCHAR(2) NOT NULL,
+            flat_rate DECIMAL(10, 2) NOT NULL,
+            PRIMARY KEY (id)
+        )";
 
-        // Output the cities as options for the dropdown
-        if ($cities) {
-            foreach ($cities as $city) {
-                echo '<option value="' . esc_attr($city) . '">' . esc_html($city) . '</option>';
-            }
-        }
-    }
-
-    die(); // This is necessary to stop WordPress from returning extra content.
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}
 }
+
+// Hook the table creation function to a custom action for testing purposes
+add_action('create_custom_city_table_hook', 'create_custom_city_table');
+
+
+
+do_action("create_custom_city_table_hook");
+// To create the table, you can manually trigger the action when needed for testing
+// For example, you can add the following code where you want to trigger the table creation:
+// do_action('create_custom_city_table_hook');
+
+
+
+
+if (!class_exists('WC_Shipping_Calc')) {
+	class WC_Shipping_Calc
+	{
+		public function __construct()
+		{
+			add_filter('woocommerce_get_sections_shipping', array($this, 'add_shipping_settings_section_tab'));
+		}
+
+		public function add_shipping_settings_section_tab($section)
+		{
+			$section['shipping_calc'] = __('Shipping City Rates', 'cities-shipping');
+			;
+
+			return $section;
+		}
+
+	}
+	$GLOBAL['wc_shipping_calc'] = new WC_Shipping_Calc();
+}
+
+
+// Display content within the custom shipping section
+function custom_shipping_section_content()
+{
+    if (isset($_GET['section']) && $_GET['section'] === 'shipping_calc') {
+        ?>
+        <div class="custom-shipping-content">
+            <h3>
+                <?php _e('Custom Shipping Section Content', 'your-text-domain'); ?>
+            </h3>
+            <p>
+                <?php _e('Add your form or inputs here.', 'your-text-domain'); ?>
+            </p>
+            <!-- Add your form or inputs here -->
+
+            <form method="post">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" /><br />
+
+                <label for="country_selector">Country</label>
+                <select name="country_selector">
+                    <?php
+                    $countries = WC()->countries->get_countries();
+
+                    foreach ($countries as $code => $name) {
+                        echo '<option value="' . esc_attr($code) . '">' . esc_html($name) . '</option>';
+                    }
+                    ?>
+                </select><br />
+
+                <label for="flat_rate_price">Flat Rate Price</label>
+                <input type="number" step="0.01" id="price" name="flat_rate_price" /><br />
+                <input type="submit" name="custom_shipping_submit" value="Submit">
+            </form>
+
+            <?php
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['custom_shipping_submit'])) {
+                global $wpdb;
+                $table_name = $wpdb->prefix . 'custom_cities';
+
+                // Retrieve form data
+                $name = sanitize_text_field($_POST['name']);
+                $country_code = sanitize_text_field($_POST['country_selector']);
+                $flat_rate_price = sanitize_text_field($_POST['flat_rate_price']);
+
+                // Insert data into the custom table
+                $wpdb->insert(
+                    $table_name,
+                    array(
+                        'name' => $name,
+                        'country_code' => $country_code,
+                        'flat_rate_price' => $flat_rate_price,
+                    ),
+                    array('%s', '%s', '%f')
+                );
+
+                // Redirect or display a success message
+            }
+            ?>
+        </div>
+        <?php
+    }
+}
+
+add_action('woocommerce_settings_tabs_shipping', 'custom_shipping_section_content');
+
+
+// Save your custom settings (if needed)
+function save_custom_shipping_settings()
+{
+	// Add your code to save settings here, if applicable
+	echo ("saving updates");
+}
+add_action('woocommerce_update_options_shipping', 'save_custom_shipping_settings');

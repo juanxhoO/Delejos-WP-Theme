@@ -73,40 +73,101 @@ get_header();
 
 <!-- Hero Element for Displaying Country City and Ocassion  -->
 
+<div class="container">
+
+	<div class="px-4 py-5 my-5 text-center row">
 
 
-<div class="px-4 py-5 my-5 text-center">
-	<h1 class="display-5 fw-bold text-body-emphasis">Centered hero</h1>
-	<div class="col-lg-6 mx-auto">
+		<form method="POST" class="row">
 
-		<?php
-		// Get the list of allowed countries for various purposes (e.g., shipping and billing).
-		$allowed_countries = WC()->countries->get_allowed_countries();
+			<!-- Country Selector -->
+			<h1 class="display-5 fw-bold text-body-emphasis">Centered hero</h1>
+			<div class="col-lg-4 mx-auto">
 
-		echo '<div id="my_custom_countries_field">';
+				<?php
+				// Get the list of allowed countries for various purposes (e.g., shipping and billing).
+				$allowed_countries = WC()->countries->get_allowed_countries();
 
-		woocommerce_form_field(
-			'my_country_field',
-			array(
-				'type' => 'select',
-				'required' => true,
-				'class' => array('chzn'),
-				'input_class' => array('form-select form-select-lg'),
-				'label' => 'Select a country',
-				'placeholder' => __('Select Country'),
-				'options' => $allowed_countries
-			)
-		);
-		echo '</div>';
+				echo '<div id="my_custom_countries_field">';
 
-		//	var_dump(get_allowed_countries());
-		?>
-	</div>
+				woocommerce_form_field(
+					'my_country_field',
+					array(
+						'type' => 'select',
+						'required' => true,
+						'class' => array('chzn'),
+						'input_class' => array('form-select form-select-lg'),
+						'label' => 'Select a country',
+						'placeholder' => __('Select Country'),
+						'options' => array('' => __('Select Country')) + $allowed_countries // Add the default option
+					)
+				);
+				echo '</div>';
 
-	<div class="col-lg-6 mx-auto">
+				//	var_dump(get_allowed_countries());
+				?>
+			</div>
 
+			<!-- City Selector -->
+			<div class="col-lg-4 mx-auto">
+
+				<?php
+				// Get the list of allowed countries for various purposes (e.g., shipping and billing).
+				$allowed_countries = WC()->countries->get_allowed_countries();
+
+				echo '<div id="my_custom_countries_field">';
+
+				woocommerce_form_field(
+					'my_country_field',
+					array(
+						'type' => 'select',
+						'required' => true,
+						'class' => array('chzn'),
+						'input_class' => array('form-select form-select-lg'),
+						'label' => 'Select a country',
+						'placeholder' => __('Select Country'),
+						'options' => $allowed_countries
+					)
+				);
+				echo '</div>';
+
+				//	var_dump(get_allowed_countries());
+				?>
+			</div>
+
+			<!--  Ocasion Selector -->
+			<div class="col-lg-4 mx-auto">
+				<label for="subcategory_dropdown">Select Ocasion:</label>
+				<select class="form-select form-select-lg" name="subcategory_dropdown" id="subcategory_dropdown">
+					<option>Select Ocasion</option>
+					<?php
+					$parent_category_slug = 'ocasion'; // Replace with the slug of the category you want to exclude.
+					
+					// Get the category ID by slug.
+					$parent_category = get_term_by('slug', $parent_category_slug, 'product_cat');
+
+					if ($parent_category && !is_wp_error($parent_category)) {
+						// Get subcategories of the parent category
+						$parent_category_id = $parent_category->term_id;
+						$subcategories = get_terms(
+							array(
+								'taxonomy' => 'product_cat',
+								'hide_empty' => false,
+								'parent' => $parent_category_id,
+							)
+						);
+						foreach ($subcategories as $subcategory) {
+							echo '<option value="' . esc_attr($subcategory->term_id) . '">' . esc_html($subcategory->name) . '</option>';
+						}
+					}
+					?>
+				</select>
+			</div>
+			<button type="submit" class="btn btn-primary btn-lg">Filter</button>
+		</form>
 	</div>
 </div>
+
 
 
 
