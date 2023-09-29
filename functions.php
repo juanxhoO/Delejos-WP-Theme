@@ -531,10 +531,10 @@ function custom_shipping_section_content()
                 global $wpdb;
                 $table_name = $wpdb->prefix . 'custom_cities';
 
-                // Retrieve form data
+                // Retrieve form data and sanitize
                 $name = sanitize_text_field($_POST['name']);
                 $country_code = sanitize_text_field($_POST['country_selector']);
-                $flat_rate_price = sanitize_text_field($_POST['flat_rate_price']);
+                $flat_rate_price = floatval($_POST['flat_rate_price']); // Convert to float
 
                 // Insert data into the custom table
                 $wpdb->insert(
@@ -547,7 +547,10 @@ function custom_shipping_section_content()
                     array('%s', '%s', '%f')
                 );
 
-                // Redirect or display a success message
+                // Optionally, redirect or display a success message
+                // Example: wp_redirect('success-page.php');
+                // or
+                // echo '<div class="success-message">Form submitted successfully!</div>';
             }
             ?>
         </div>
@@ -556,7 +559,6 @@ function custom_shipping_section_content()
 }
 
 add_action('woocommerce_settings_tabs_shipping', 'custom_shipping_section_content');
-
 
 // Save your custom settings (if needed)
 function save_custom_shipping_settings()
