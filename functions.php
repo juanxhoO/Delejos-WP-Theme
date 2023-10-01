@@ -22,12 +22,12 @@ define('_S_VERSION', '1.3.422');
 function ecommerce_delejos_setup()
 {
 	/*
-																 * Make theme available for translation.
-																 * Translations can be filed in the /languages/ directory.
-																 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-																padding: 40px 10%;nd and replace
-																 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
-																 */
+																						 * Make theme available for translation.
+																						 * Translations can be filed in the /languages/ directory.
+																						 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+																						padding: 40px 10%;nd and replace
+																						 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
+																						 */
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -547,19 +547,104 @@ function custom_admin_page_content()
 			// or
 			// echo '<div class="success-message">Form submitted successfully!</div>';
 		}
-
-
-		//Adding all The cities Below
-
-
-		$table_name = $wpdb->prefix . 'custom_cities';
-
 		?>
-
-
-
-
 	</div>
 	<?php
+	display_cities_and_countries();
 
 }
+
+
+
+
+function display_cities_and_countries()
+{
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . 'custom_cities';
+	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_prices'])) {
+
+		// Handle the form submission to update prices here
+		$updated_prices = $_POST['updated_prices']; // This should be an array containing city names and updated prices
+
+		echo ($updated_prices);
+
+		if (!empty($updated_prices)) {
+			foreach ($updated_prices as $city_name => $new_price) {
+				// Sanitize the input data and update the database
+				$city_name = sanitize_text_field($city_name);
+				$new_price = floatval($new_price);
+
+				$wpdb->update(
+					$table_name,
+					array('flat_rate' => $new_price),
+					array('name' => $city_name)
+				);
+			}
+
+			// Optionally, redirect or display a success message
+			// Example: wp_redirect('success-page.php');
+			// or
+			// echo '<div class="success-message">Prices updated successfully!</div>';
+		}
+	}
+
+
+	// Retrieve cities and countries from the custom table
+	$results = $wpdb->get_results("SELECT city_name, country_code, flat_rate FROM $table_name", ARRAY_A);
+
+	if ($results) {
+		echo '<form method="post" action="">';
+		echo '<label for="country_select">Select a Country:</label>';
+		echo '<select id="country_select">';
+		echo '<option value="all">All Countries</option>';
+
+		// Create an array to store cities by country
+		$cities_by_country = array();
+
+		foreach ($results as $row) {
+			$city = esc_html($row['city_name']);
+			$country = esc_html($row['country_code']);
+			$price = floatval($row['flat_rate']);
+
+			// Store cities in an array by country
+			if (!isset($cities_by_country[$country])) {
+				$cities_by_country[$country] = array();
+			}
+			$cities_by_country[$country][] = array('city' => $city, 'price' => $price);
+		}
+
+		// Generate the select options for countries
+		foreach ($cities_by_country as $country_code => $cities) {
+			echo '<option value="' . esc_attr($country_code) . '">' . esc_html($country_code) . '</option>';
+		}
+		echo '</select>';
+		echo '<input type="submit" name="update_prices" value="Update Prices">';
+		echo '</form>';
+
+		// Display cities based on the selected country
+		echo '<div id="cities_display">';
+
+		foreach ($cities_by_country as $country_code => $cities) {
+			echo '<div class="country-cities" data-country="' . esc_attr($country_code) . '">';
+			foreach ($cities as $city_data) {
+				echo '<p>';
+				echo '<strong>' . esc_html($city_data['city']) . ':</strong> ';
+				echo '<input type="text" class="edit-price" value="' . esc_attr($city_data['price']) . '">';
+				echo '</p>';
+			}
+			echo '</div>';
+		}
+
+		echo '</div>';
+	} else {
+		echo '<p>No cities and countries found.</p>';
+	}
+}
+
+
+function enqueue_custom_script()
+{
+	wp_enqueue_script('custom-script', get_template_directory_uri() . '/admin-city-shipping.js', array('jquery'), '1.0', true);
+}
+add_action('admin_enqueue_scripts', 'enqueue_custom_script');
