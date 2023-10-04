@@ -10,7 +10,7 @@
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 }
-define('_S_VERSION', '1.3.422');
+define('_S_VERSION', '1.5.4222222');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -22,12 +22,12 @@ define('_S_VERSION', '1.3.422');
 function ecommerce_delejos_setup()
 {
 	/*
-																						 * Make theme available for translation.
-																						 * Translations can be filed in the /languages/ directory.
-																						 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-																						padding: 40px 10%;nd and replace
-																						 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
-																						 */
+																									 * Make theme available for translation.
+																									 * Translations can be filed in the /languages/ directory.
+																									 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+																									padding: 40px 10%;nd and replace
+																									 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
+																									 */
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -280,126 +280,69 @@ class Bootstrap_Nav_Walker extends Walker_Nav_Menu
 }
 
 
-function display_products_by_country($country)
-{
-	global $wpdb;
+// function display_products_by_country($country)
+// {
+// 	global $wpdb;
 
-	// Prepare the SQL query to fetch product IDs with the specified country attribute
-	$query = $wpdb->prepare("
-        SELECT product_id
-        FROM {$wpdb->prefix}wc_product_meta_lookup
-        WHERE country = %s
-    ", $country);
-	$product_ids = $wpdb->get_col($query);
-	var_dump($product_ids);
+// 	// Prepare the SQL query to fetch product IDs with the specified country attribute
+// 	$query = $wpdb->prepare("
+//         SELECT product_id
+//         FROM {$wpdb->prefix}wc_product_meta_lookup
+//         WHERE country = %s
+//     ", $country);
+// 	$product_ids = $wpdb->get_col($query);
+// 	var_dump($product_ids);
 
-	if (!empty($product_ids)) {
-		// Query and display the products based on the retrieved product IDs
-		$args = array(
-			'post_type' => 'product',
-			'post__in' => $product_ids,
-			'posts_per_page' => -1,
-		);
+// 	if (!empty($product_ids)) {
+// 		// Query and display the products based on the retrieved product IDs
+// 		$args = array(
+// 			'post_type' => 'product',
+// 			'post__in' => $product_ids,
+// 			'posts_per_page' => -1,
+// 		);
 
-		$products = new WP_Query($args);
+// 		$products = new WP_Query($args);
 
-		if ($products->have_posts()) {
-			ob_start();
-			woocommerce_product_loop_start();
-			while ($products->have_posts()):
-				$products->the_post();
-				wc_get_template_part('content', 'product');
-			endwhile;
-			woocommerce_product_loop_end();
-			ob_end_flush();
-		} else {
-			echo 'No products found for the specified country.';
-		}
+// 		if ($products->have_posts()) {
+// 			ob_start();
+// 			woocommerce_product_loop_start();
+// 			while ($products->have_posts()):
+// 				$products->the_post();
+// 				wc_get_template_part('content', 'product');
+// 			endwhile;
+// 			woocommerce_product_loop_end();
+// 			ob_end_flush();
+// 		} else {
+// 			echo 'No products found for the specified country.';
+// 		}
 
-		wp_reset_postdata();
-	} else {
-		echo 'No products found for the specified country.';
-	}
-}
+// 		wp_reset_postdata();
+// 	} else {
+// 		echo 'No products found for the specified country.';
+// 	}
+// }
 
 // Define a custom function to modify the product URLs.
-function custom_rewrite_rules()
-{
-	add_rewrite_rule(
-		'^flores-ecuador/([^/]+)/([^/]+)/?$',
-		'index.php?product_category=$matches[1]&product=$matches[2]',
-		'top'
-	);
-}
-add_action('init', 'custom_rewrite_rules');
-function custom_query_vars($query_vars)
-{
-	$query_vars[] = 'product_category';
-	$query_vars[] = 'product';
-	return $query_vars;
-}
-add_filter('query_vars', 'custom_query_vars');
+// function custom_rewrite_rules()
+// {
+// 	add_rewrite_rule(
+// 		'^flores-ecuador/([^/]+)/([^/]+)/?$',
+// 		'index.php?product_category=$matches[1]&product=$matches[2]',
+// 		'top'
+// 	);
+// }
 
-function add_country_visibility_meta_box()
-{
-	add_meta_box(
-		'country-visibility-meta-box',
-		'Country Visibility',
-		'render_country_pricing_meta_box',
-		'product',
-		'side',
-		'default'
-	);
-}
-add_action('add_meta_boxes', 'add_country_visibility_meta_box');
+// add_action('init', 'custom_rewrite_rules');
+// function custom_query_vars($query_vars)
+// {
+// 	$query_vars[] = 'product_category';
+// 	$query_vars[] = 'product';
+// 	return $query_vars;
+// }
+// add_filter('query_vars', 'custom_query_vars');
 
-function save_country_pricing($post_id)
-{
-	if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-		return;
 
-	if (isset($_POST['country_pricing'])) {
-		$country_pricing = $_POST['country_pricing'];
-		update_post_meta($post_id, '_country_pricing', $country_pricing);
-	}
-}
-add_action('save_post', 'save_country_pricing');
-
-function render_country_pricing_meta_box($post)
-{
-	// Retrieve the existing country-based prices, if any.
-	$country_pricing = get_post_meta($post->ID, '_country_pricing', true);
-
-	// Define an array of countries you want to support (or fetch dynamically).
-	$supported_countries = array(
-		'US' => 'United States',
-		'CA' => 'Canada',
-		// Add more countries as needed...
-	);
-
-	$countries = WC()->countries->get_countries();
-	if (!empty($countries)) {
-		// Loop through the list of countries and generate checkboxes
-		foreach ($countries as $code => $name) {
-			$price = isset($country_pricing[$code]) ? $country_pricing[$code] : '';
-			?>
-			<label for="country_<?php echo esc_attr($code); ?>">
-				<input type="checkbox" id="country_<?php echo esc_attr($code); ?>" name="selected_countries[]"
-					value="<?php echo esc_attr($code); ?>" />
-				<?php echo esc_html($name); ?>
-				<?php
-				echo '<p>';
-				echo '<input type="text" id="country_' . esc_attr($code) . '" name="country_pricing[' . esc_attr($code) . ']" value="' . esc_attr($price) . '" />';
-				echo '</p>';
-				?>
-			</label>
-			<br>
-			<?php
-		}
-	} else {
-		echo 'No countries found.';
-	}
-}
+//Agreganto contenedor de Paises en Pagina del Producto (Admin) 
 
 
 /**
@@ -444,7 +387,6 @@ function create_custom_city_table()
 	// Check if the table already exists
 	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 
-		echo ("tabe created");
 		$sql = "CREATE TABLE $table_name (
             id INT NOT NULL AUTO_INCREMENT,
             city_name VARCHAR(255) NOT NULL,
@@ -554,9 +496,6 @@ function custom_admin_page_content()
 
 }
 
-
-
-
 function display_cities_and_countries()
 {
 	global $wpdb;
@@ -591,13 +530,15 @@ function display_cities_and_countries()
 
 
 	// Retrieve cities and countries from the custom table
-	$results = $wpdb->get_results("SELECT city_name, country_code, flat_rate FROM $table_name", ARRAY_A);
+	$results = $wpdb->get_results("SELECT city_name, country_code, flat_rate, ID FROM $table_name", ARRAY_A);
 
-	if ($results) {
+
+	if (!empty($results)) {
 		echo '<form method="post" action="">';
 		echo '<label for="country_select">Select a Country:</label>';
 		echo '<select id="country_select">';
 		echo '<option value="all">All Countries</option>';
+
 
 		// Create an array to store cities by country
 		$cities_by_country = array();
@@ -606,18 +547,24 @@ function display_cities_and_countries()
 			$city = esc_html($row['city_name']);
 			$country = esc_html($row['country_code']);
 			$price = floatval($row['flat_rate']);
-
+			$id = intval($row['ID']);
 			// Store cities in an array by country
 			if (!isset($cities_by_country[$country])) {
 				$cities_by_country[$country] = array();
 			}
-			$cities_by_country[$country][] = array('city' => $city, 'price' => $price);
+			$cities_by_country[$country][] = array('city' => $city, 'price' => $price, 'id' => $id);
 		}
 
 		// Generate the select options for countries
+
+		$countries = WC()->countries->get_countries();
+
+
 		foreach ($cities_by_country as $country_code => $cities) {
-			echo '<option value="' . esc_attr($country_code) . '">' . esc_html($country_code) . '</option>';
+			echo '<option value="' . esc_attr($country_code) . '">' . esc_html($countries[$country_code]) . '</option>';
 		}
+
+
 		echo '</select>';
 		echo '<input type="submit" name="update_prices" value="Update Prices">';
 		echo '</form>';
@@ -631,20 +578,182 @@ function display_cities_and_countries()
 				echo '<p>';
 				echo '<strong>' . esc_html($city_data['city']) . ':</strong> ';
 				echo '<input type="text" class="edit-price" value="' . esc_attr($city_data['price']) . '">';
+				echo '<button data-value="' . esc_attr($city_data['id']) . '" class="delete-city">Delete</button>';
+				echo '<button data-value="' . esc_attr($city_data['id']) . '" class="update-city">Update</button>';
 				echo '</p>';
 			}
 			echo '</div>';
 		}
-
 		echo '</div>';
 	} else {
 		echo '<p>No cities and countries found.</p>';
 	}
 }
 
-
 function enqueue_custom_script()
 {
-	wp_enqueue_script('custom-script', get_template_directory_uri() . '/admin-city-shipping.js', array('jquery'), '1.0', true);
+	wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/admin-city-shipping.js', array('jquery'), '11.0', true);
+	wp_localize_script('custom-script', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+
 }
+
 add_action('admin_enqueue_scripts', 'enqueue_custom_script');
+
+// Same handler function...
+add_action('wp_ajax_delete_city', 'delete_city');
+function delete_city()
+{
+	global $wpdb;
+
+	$id = intval($_POST['id']);
+
+	$table_name = $wpdb->prefix . 'custom_cities';
+
+	$result = $wpdb->delete($table_name, array('id' => $id));
+
+	if ($result === false) {
+		echo "Error deleting record: " . $wpdb->last_error;
+	} else {
+		echo "Record deleted successfully";
+	}
+	wp_die();
+}
+
+
+// Same handler function...
+add_action('wp_ajax_update_city', 'update_city');
+function update_city()
+{
+	global $wpdb;
+	$id = intval($_POST['id']);
+	$new_price = floatval($_POST['new_price']);
+
+	$table_name = $wpdb->prefix . 'custom_cities';
+
+	// Data to update
+	$data_to_update = array(
+		'flat_rate' => $new_price,
+	);
+
+	// Conditions for which rows to update
+	$where = array(
+		'id' => $id
+	);
+
+	$updated = $wpdb->update($table_name, $data_to_update, $where);
+
+	if ($updated === false) {
+		echo "Error updating record: " . $wpdb->last_error;
+	} elseif ($updated === 0) {
+		echo "No rows were updated.";
+	} else {
+		echo "Row updated successfully.";
+	}
+
+	wp_die();
+}
+
+
+
+
+// Add custom fields for regular price, sale price, sale schedule, and multiple countries to the product's General tab
+function add_custom_field_to_product_general_tab() {
+    global $post;
+
+    // Check if the post type is 'product'
+    if ($post->post_type === 'product') {
+		
+
+		$countries = WC()->countries->get_countries();
+
+        foreach ($countries as $code => $country) {
+
+
+			echo'<div class="country_container">';
+
+			woocommerce_wp_checkbox(
+                array(
+                    'id' => '_custom_country_active_' . sanitize_title($country),
+                    'description' => sprintf(__('Check this box to activate.', 'woocommerce'), $country),
+                )
+            );
+			
+			woocommerce_wp_text_input(
+                array(
+                    'id' => '_custom_country_price_' . sanitize_title($country),
+                    'label' => sprintf(__('Price for %s ($)', 'woocommerce'), $country),
+                    'placeholder' => '',
+                    'desc_tip' => 'true',
+                    'description' => sprintf(__('Enter the price for this product in %s.', 'woocommerce'), $code),
+                    'type' => 'number',
+                    'custom_attributes' => array(
+                        'step' => 'any',
+                        'min' => '0'
+                    )
+                )
+            );
+
+            woocommerce_wp_text_input(
+                array(
+                    'id' => '_custom_country_sale_price_' . sanitize_title($country),
+                    'label' => sprintf(__('Sale Price($)', 'woocommerce')),
+                    'placeholder' => '',
+                    'desc_tip' => 'true',
+                    'description' => sprintf(__('Enter the sale price for this product in %s.', 'woocommerce'), $country),
+                    'type' => 'number',
+                    'custom_attributes' => array(
+                        'step' => 'any',
+                        'min' => '0'
+                    )
+                )
+            );
+			echo'</div>';
+
+
+            // woocommerce_wp_text_input(
+            //     array(
+            //         'id' => '_custom_country_sale_schedule_' . sanitize_title($country),
+            //         'label' => sprintf(__('Sale Schedule for %s', 'woocommerce'), $country),
+            //         'placeholder' => '',
+            //         'desc_tip' => 'true',
+            //         'description' => sprintf(__('Enter the sale schedule for this product in %s (YY MM DD).', 'woocommerce'), $country),
+            //         'type' => 'text', // Use 'text' input type for date
+            //         'custom_attributes' => array(
+            //             'placeholder' => 'YY MM DD',
+            //             'data-datepicker_format' => 'yy mm dd', // Set the desired date format
+            //         )
+            //     )
+            // );
+        }
+    }
+}
+
+add_action('woocommerce_product_options_general_product_data', 'add_custom_field_to_product_general_tab');
+
+// Save the custom field data for regular price, sale price, sale schedule, and multiple countries
+function save_custom_field_data($product_id) {
+	$countries = WC()->countries->get_countries();
+
+    foreach ($countries as $code =>  $name) {
+        $price_field_name = '_custom_country_price_' . sanitize_title($name);
+        $sale_price_field_name = '_custom_country_sale_price_' . sanitize_title($name);
+        // $sale_schedule_field_name = '_custom_country_sale_schedule_' . sanitize_title($name);
+        $active_field_name = '_custom_country_active_' . sanitize_title($name);
+
+
+        $country_price = isset($_POST[$price_field_name]) ? wc_clean($_POST[$price_field_name]) : '';
+        $country_sale_price = isset($_POST[$sale_price_field_name]) ? wc_clean($_POST[$sale_price_field_name]) : '';
+        // $country_sale_schedule = isset($_POST[$sale_schedule_field_name]) ? wc_clean($_POST[$sale_schedule_field_name]) : '';
+        $country_active = isset($_POST[$active_field_name]) ? 'yes' : 'no';
+
+
+        update_post_meta($product_id, $price_field_name, $country_price);
+        update_post_meta($product_id, $sale_price_field_name, $country_sale_price);
+        // update_post_meta($product_id, $sale_schedule_field_name, $country_sale_schedule);
+		update_post_meta($product_id, $active_field_name, $country_active);
+
+
+	}
+}
+
+add_action('woocommerce_process_product_meta', 'save_custom_field_data');

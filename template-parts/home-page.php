@@ -61,9 +61,6 @@ get_header();
 
 		<i class="fa-solid fa-cart-shopping"></i>
 		<?php
-
-
-
 		if (function_exists('ecommerce_delejos_woocommerce_header_cart')) {
 			ecommerce_delejos_woocommerce_header_cart();
 		}
@@ -87,7 +84,7 @@ get_header();
 				<?php
 				// Get the list of allowed countries for various purposes (e.g., shipping and billing).
 				$allowed_countries = WC()->countries->get_allowed_countries();
-
+				var_dump($allowed_countries);
 				echo '<div id="my_custom_countries_field">';
 
 				woocommerce_form_field(
@@ -113,20 +110,26 @@ get_header();
 
 				<?php
 				// Get the list of allowed countries for various purposes (e.g., shipping and billing).
-				$allowed_countries = WC()->countries->get_allowed_countries();
+				
+				global $wpdb;
+
+				$table_name = $wpdb->prefix . 'custom_cities';
+				$cities = $wpdb->get_results("SELECT city_name, country_code, ID FROM $table_name",ARRAY_A);
+				var_dump($cities);
+
 
 				echo '<div id="my_custom_countries_field">';
 
 				woocommerce_form_field(
-					'my_country_field',
+					'my_city_field',
 					array(
 						'type' => 'select',
 						'required' => true,
 						'class' => array('chzn'),
 						'input_class' => array('form-select form-select-lg'),
-						'label' => 'Select a country',
-						'placeholder' => __('Select Country'),
-						'options' => $allowed_countries
+						'label' => 'Select a city',
+						'placeholder' => __('Select City'),
+						'options' => $cities
 					)
 				);
 				echo '</div>';

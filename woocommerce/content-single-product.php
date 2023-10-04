@@ -59,8 +59,36 @@ if (post_password_required()) {
          * @hooked WC_Structured_Data::generate_product_data() - 60
          */
         do_action('woocommerce_single_product_summary');
-        ?>
 
+        global $product;
+        $countries = WC()->countries->get_countries();
+        
+        foreach ($countries as $code => $country) {
+            $price_field_name = '_custom_country_price_' . sanitize_title($country);
+            $sale_price_field_name = '_custom_country_sale_price_' . sanitize_title($country);
+            $active_field_name = '_custom_country_active_' . sanitize_title($country);
+
+            $country_price = get_post_meta(get_the_ID(), $price_field_name, true);
+            $country_sale_price = get_post_meta(get_the_ID(), $sale_price_field_name, true);
+            $country_active = get_post_meta(get_the_ID(), $active_field_name, true);
+
+                if ($country_price) {
+                    echo '<p class="price">' . sprintf(__('Price in %s: %s', 'woocommerce'), $country, wc_price($country_price)) . '</p>';
+                }
+
+                // if ($country_sale_price && $country_sale_schedule) {
+                //     $current_date = date('Y-m-d');
+
+                //     if ($current_date >= $country_sale_schedule) {
+                //         echo '<p class="country-sale-price">' . sprintf(__('Sale Price in %s: %s', 'woocommerce'), $country, wc_price($country_sale_price)) . '</p>';
+                //     } else {
+                //         echo '<p class="country-sale-price">' . sprintf(__('Sale starts on %s in %s', 'woocommerce'), $country_sale_schedule, $country) . '</p>';
+                //     }
+                // }
+            
+        }
+
+        ?>
     </div>
 
     <?php
