@@ -84,7 +84,7 @@ get_header();
 				<?php
 				// Get the list of allowed countries for various purposes (e.g., shipping and billing).
 				$allowed_countries = WC()->countries->get_allowed_countries();
-				var_dump($allowed_countries);
+
 				echo '<div id="my_custom_countries_field">';
 
 				woocommerce_form_field(
@@ -115,23 +115,8 @@ get_header();
 
 				$table_name = $wpdb->prefix . 'custom_cities';
 				$cities = $wpdb->get_results("SELECT city_name, country_code, ID FROM $table_name",ARRAY_A);
-				var_dump($cities);
 
-
-				echo '<div id="my_custom_countries_field">';
-
-				woocommerce_form_field(
-					'my_city_field',
-					array(
-						'type' => 'select',
-						'required' => true,
-						'class' => array('chzn'),
-						'input_class' => array('form-select form-select-lg'),
-						'label' => 'Select a city',
-						'placeholder' => __('Select City'),
-						'options' => $cities
-					)
-				);
+				echo '<div id="my_custom_countries_field"><label>Select City</label><select class="form-select form-select-lg"><option>sdsd</option></select>';
 				echo '</div>';
 
 				//	var_dump(get_allowed_countries());

@@ -22,12 +22,12 @@ define('_S_VERSION', '1.5.4222222');
 function ecommerce_delejos_setup()
 {
 	/*
-																									 * Make theme available for translation.
-																									 * Translations can be filed in the /languages/ directory.
-																									 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-																									padding: 40px 10%;nd and replace
-																									 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
-																									 */
+																															 * Make theme available for translation.
+																															 * Translations can be filed in the /languages/ directory.
+																															 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+																															padding: 40px 10%;nd and replace
+																															 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
+																															 */
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -656,100 +656,139 @@ function update_city()
 
 
 
-// Add custom fields for regular price, sale price, sale schedule, and multiple countries to the product's General tab
-function add_custom_field_to_product_general_tab() {
-    global $post;
+// Same handler function...
+add_action('wp_ajax_update_cities', 'get_cities');
+function get_cities()
+{
+	global $wpdb;
+	$id = intval($_POST['id']);
+	$new_price = floatval($_POST['new_price']);
 
-    // Check if the post type is 'product'
-    if ($post->post_type === 'product') {
-		
+	$table_name = $wpdb->prefix . 'custom_cities';
+
+	// Data to update
+	$data_to_update = array(
+		'flat_rate' => $new_price,
+	);
+
+	// Conditions for which rows to update
+	$where = array(
+		'id' => $id
+	);
+
+	$updated = $wpdb->update($table_name, $data_to_update, $where);
+
+	if ($updated === false) {
+		echo "Error updating record: " . $wpdb->last_error;
+	} elseif ($updated === 0) {
+		echo "No rows were updated.";
+	} else {
+		echo "Row updated successfully.";
+	}
+
+	wp_die();
+}
+
+
+
+
+
+// Add custom fields for regular price, sale price, sale schedule, and multiple countries to the product's General tab
+function add_custom_field_to_product_general_tab()
+{
+	global $post;
+
+	// Check if the post type is 'product'
+	if ($post->post_type === 'product') {
+
 
 		$countries = WC()->countries->get_countries();
 
-        foreach ($countries as $code => $country) {
+		foreach ($countries as $code => $country) {
 
 
-			echo'<div class="country_container">';
+			echo '<div class="country_container">';
 
 			woocommerce_wp_checkbox(
-                array(
-                    'id' => '_custom_country_active_' . sanitize_title($country),
-                    'description' => sprintf(__('Check this box to activate.', 'woocommerce'), $country),
-                )
-            );
-			
+				array(
+					'id' => '_custom_country_active_' . sanitize_title($code),
+					'description' => sprintf(__('Check this box to activate.', 'woocommerce')),
+				)
+			);
+
 			woocommerce_wp_text_input(
-                array(
-                    'id' => '_custom_country_price_' . sanitize_title($country),
-                    'label' => sprintf(__('Price for %s ($)', 'woocommerce'), $country),
-                    'placeholder' => '',
-                    'desc_tip' => 'true',
-                    'description' => sprintf(__('Enter the price for this product in %s.', 'woocommerce'), $code),
-                    'type' => 'number',
-                    'custom_attributes' => array(
-                        'step' => 'any',
-                        'min' => '0'
-                    )
-                )
-            );
+				array(
+					'id' => '_custom_country_price_' . sanitize_title($code),
+					'label' => sprintf(__('Price for %s ($)', 'woocommerce'), $country),
+					'placeholder' => '',
+					'desc_tip' => 'true',
+					'description' => sprintf(__('Enter the price for this product in %s.', 'woocommerce'), $code),
+					'type' => 'number',
+					'custom_attributes' => array(
+						'step' => 'any',
+						'min' => '0'
+					)
+				)
+			);
 
-            woocommerce_wp_text_input(
-                array(
-                    'id' => '_custom_country_sale_price_' . sanitize_title($country),
-                    'label' => sprintf(__('Sale Price($)', 'woocommerce')),
-                    'placeholder' => '',
-                    'desc_tip' => 'true',
-                    'description' => sprintf(__('Enter the sale price for this product in %s.', 'woocommerce'), $country),
-                    'type' => 'number',
-                    'custom_attributes' => array(
-                        'step' => 'any',
-                        'min' => '0'
-                    )
-                )
-            );
-			echo'</div>';
+			woocommerce_wp_text_input(
+				array(
+					'id' => '_custom_country_sale_price_' . sanitize_title($code),
+					'label' => sprintf(__('Sale Price($)', 'woocommerce')),
+					'placeholder' => '',
+					'desc_tip' => 'true',
+					'description' => sprintf(__('Enter the sale price for this product in %s.', 'woocommerce'), $country),
+					'type' => 'number',
+					'custom_attributes' => array(
+						'step' => 'any',
+						'min' => '0'
+					)
+				)
+			);
+			echo '</div>';
 
 
-            // woocommerce_wp_text_input(
-            //     array(
-            //         'id' => '_custom_country_sale_schedule_' . sanitize_title($country),
-            //         'label' => sprintf(__('Sale Schedule for %s', 'woocommerce'), $country),
-            //         'placeholder' => '',
-            //         'desc_tip' => 'true',
-            //         'description' => sprintf(__('Enter the sale schedule for this product in %s (YY MM DD).', 'woocommerce'), $country),
-            //         'type' => 'text', // Use 'text' input type for date
-            //         'custom_attributes' => array(
-            //             'placeholder' => 'YY MM DD',
-            //             'data-datepicker_format' => 'yy mm dd', // Set the desired date format
-            //         )
-            //     )
-            // );
-        }
-    }
+			// woocommerce_wp_text_input(
+			//     array(
+			//         'id' => '_custom_country_sale_schedule_' . sanitize_title($country),
+			//         'label' => sprintf(__('Sale Schedule for %s', 'woocommerce'), $country),
+			//         'placeholder' => '',
+			//         'desc_tip' => 'true',
+			//         'description' => sprintf(__('Enter the sale schedule for this product in %s (YY MM DD).', 'woocommerce'), $country),
+			//         'type' => 'text', // Use 'text' input type for date
+			//         'custom_attributes' => array(
+			//             'placeholder' => 'YY MM DD',
+			//             'data-datepicker_format' => 'yy mm dd', // Set the desired date format
+			//         )
+			//     )
+			// );
+		}
+	}
 }
 
 add_action('woocommerce_product_options_general_product_data', 'add_custom_field_to_product_general_tab');
 
 // Save the custom field data for regular price, sale price, sale schedule, and multiple countries
-function save_custom_field_data($product_id) {
+function save_custom_field_data($product_id)
+{
 	$countries = WC()->countries->get_countries();
 
-    foreach ($countries as $code =>  $name) {
-        $price_field_name = '_custom_country_price_' . sanitize_title($name);
-        $sale_price_field_name = '_custom_country_sale_price_' . sanitize_title($name);
-        // $sale_schedule_field_name = '_custom_country_sale_schedule_' . sanitize_title($name);
-        $active_field_name = '_custom_country_active_' . sanitize_title($name);
+	foreach ($countries as $code => $name) {
+		$price_field_name = '_custom_country_price_' . sanitize_title($code);
+		$sale_price_field_name = '_custom_country_sale_price_' . sanitize_title($code);
+		// $sale_schedule_field_name = '_custom_country_sale_schedule_' . sanitize_title($name);
+		$active_field_name = '_custom_country_active_' . sanitize_title($code);
 
 
-        $country_price = isset($_POST[$price_field_name]) ? wc_clean($_POST[$price_field_name]) : '';
-        $country_sale_price = isset($_POST[$sale_price_field_name]) ? wc_clean($_POST[$sale_price_field_name]) : '';
-        // $country_sale_schedule = isset($_POST[$sale_schedule_field_name]) ? wc_clean($_POST[$sale_schedule_field_name]) : '';
-        $country_active = isset($_POST[$active_field_name]) ? 'yes' : 'no';
+		$country_price = isset($_POST[$price_field_name]) ? wc_clean($_POST[$price_field_name]) : '';
+		$country_sale_price = isset($_POST[$sale_price_field_name]) ? wc_clean($_POST[$sale_price_field_name]) : '';
+		// $country_sale_schedule = isset($_POST[$sale_schedule_field_name]) ? wc_clean($_POST[$sale_schedule_field_name]) : '';
+		$country_active = isset($_POST[$active_field_name]) ? 'yes' : 'no';
 
 
-        update_post_meta($product_id, $price_field_name, $country_price);
-        update_post_meta($product_id, $sale_price_field_name, $country_sale_price);
-        // update_post_meta($product_id, $sale_schedule_field_name, $country_sale_schedule);
+		update_post_meta($product_id, $price_field_name, $country_price);
+		update_post_meta($product_id, $sale_price_field_name, $country_sale_price);
+		// update_post_meta($product_id, $sale_schedule_field_name, $country_sale_schedule);
 		update_post_meta($product_id, $active_field_name, $country_active);
 
 
@@ -757,3 +796,107 @@ function save_custom_field_data($product_id) {
 }
 
 add_action('woocommerce_process_product_meta', 'save_custom_field_data');
+
+
+// Replace 'Country1' with the actual country name or detection logic
+
+// Hook into the WooCommerce price calculation
+add_filter('woocommerce_get_price', 'custom_product_price_based_on_country', 10, 2);
+
+function custom_product_price_based_on_country($price, $product)
+{
+	global $post;
+
+	// Check if we are on a single product page
+	if (is_product() && $post) {
+		// Check if the product has custom pricing for the selected country
+		$custom_price = get_post_meta($post->ID, '_custom_country_price_' . sanitize_title("Albania"), true);
+
+		if ($custom_price) {
+			return $custom_price; // Replace the default price with the custom price
+		}
+	}
+
+	return $price; // Return the default price if no custom price is set
+}
+
+
+
+
+function custom_permalink_structure($post_link, $post)
+{
+	if (is_object($post) && $post->post_type == 'product') {
+
+
+		$terms = get_the_terms($post->ID, 'product_cat');
+
+		if ($terms && !is_wp_error($terms)) {
+			$country = 'ecuador'; // Default country
+
+
+			// Get the user's selected country from the geolocation plugin
+			foreach ($terms as $term) {
+				if (strpos($term->slug, 'flores-' . $country) !== false) {
+					$category = $term->slug;
+					$post_link = home_url("/flores-$country/$category/{$post->post_name}/");
+					break;
+				}
+			}
+		}
+	}
+	return $post_link;
+}
+add_filter('post_type_link', 'custom_permalink_structure', 10, 2);
+
+
+// Adding Homepage Scripts
+
+/**
+ * Enqueue scripts and styles.
+ */
+function ecommerce_homepage_delejos_scripts()
+{
+	if (is_front_page()) {
+
+		wp_enqueue_script('home-script', get_template_directory_uri() . '/js/homepage_selector.js', array('jquery'), '6.0', true);
+
+		//ajax_object
+		wp_localize_script('home-script', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+
+	}
+}
+add_action('wp_enqueue_scripts', 'ecommerce_homepage_delejos_scripts');
+
+
+
+// Same handler function...
+add_action('wp_ajax_fetch_cities', 'fetch_cities');
+add_action('wp_ajax_nopriv_fetch_cities', 'fetch_cities');
+
+function fetch_cities()
+{
+	$country_selected = isset($_GET['country']) ? sanitize_text_field($_GET['country']) : '';
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'custom_cities';
+	$query = $wpdb->prepare("SELECT city_name FROM $table_name WHERE country_code = %s", $country_selected);
+	$cities = $wpdb->get_results($query);
+
+
+	// Initialize the result array
+	$result = array();
+
+	// Check if there are results
+	if ($cities) {
+		// Loop through the results and add them to the result array
+		foreach ($cities as $city) {
+			$result[] = $city->city_name;
+		}
+	}
+
+	// Return the result (either an array of city names or an empty array)
+	echo json_encode($result);
+
+	wp_die();
+}
+
