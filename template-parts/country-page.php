@@ -63,25 +63,22 @@ get_header();
 				<span class="visually-hidden">Next</span>
 			</button>
 		</div>
-
+		
 		<main id="primary" class="site-main container">
-
-			<div class="navbar navbar-expand-lg category-navbar">
+			<nav class="navbar navbar-expand-lg category-navbar navbar">
 				<div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
 					<?php
 					wp_nav_menu(
 						array(
 							'theme_location' => 'category-menu',
 							// Change this to your menu location
-							'menu_class' => 'navbar-nav d-flex justify-content-between',
+							'menu_class' => 'navbar-nav',
 							'walker' => new Bootstrap_Nav_Walker(),
 						)
 					);
 					?>
 				</div>
-			</div>
-
-
+			</nav>
 			<?php
 			while (have_posts()):
 				the_post();
@@ -95,5 +92,5 @@ get_header();
 </article><!-- #post-<?php the_ID(); ?> -->
 
 <?php
-	get_footer();
+get_footer();
 ?>

@@ -26,9 +26,9 @@ get_header();
 	</div><!-- .site-branding -->
 
 
-	<div class="d-flex">
+	<div class="d-flex delejos_home_menu">
 		<!-- This div will vertically align the content -->
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<nav class="navbar navbar-expand-lg">
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<?php
 				wp_nav_menu(

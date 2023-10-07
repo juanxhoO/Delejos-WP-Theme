@@ -10,7 +10,7 @@
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 }
-define('_S_VERSION', '1.5.4222222');
+define('_S_VERSION', '1.5.4222222122');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -278,72 +278,6 @@ class Bootstrap_Nav_Walker extends Walker_Nav_Menu
 		$output .= '</ul>';
 	}
 }
-
-
-// function display_products_by_country($country)
-// {
-// 	global $wpdb;
-
-// 	// Prepare the SQL query to fetch product IDs with the specified country attribute
-// 	$query = $wpdb->prepare("
-//         SELECT product_id
-//         FROM {$wpdb->prefix}wc_product_meta_lookup
-//         WHERE country = %s
-//     ", $country);
-// 	$product_ids = $wpdb->get_col($query);
-// 	var_dump($product_ids);
-
-// 	if (!empty($product_ids)) {
-// 		// Query and display the products based on the retrieved product IDs
-// 		$args = array(
-// 			'post_type' => 'product',
-// 			'post__in' => $product_ids,
-// 			'posts_per_page' => -1,
-// 		);
-
-// 		$products = new WP_Query($args);
-
-// 		if ($products->have_posts()) {
-// 			ob_start();
-// 			woocommerce_product_loop_start();
-// 			while ($products->have_posts()):
-// 				$products->the_post();
-// 				wc_get_template_part('content', 'product');
-// 			endwhile;
-// 			woocommerce_product_loop_end();
-// 			ob_end_flush();
-// 		} else {
-// 			echo 'No products found for the specified country.';
-// 		}
-
-// 		wp_reset_postdata();
-// 	} else {
-// 		echo 'No products found for the specified country.';
-// 	}
-// }
-
-// Define a custom function to modify the product URLs.
-// function custom_rewrite_rules()
-// {
-// 	add_rewrite_rule(
-// 		'^flores-ecuador/([^/]+)/([^/]+)/?$',
-// 		'index.php?product_category=$matches[1]&product=$matches[2]',
-// 		'top'
-// 	);
-// }
-
-// add_action('init', 'custom_rewrite_rules');
-// function custom_query_vars($query_vars)
-// {
-// 	$query_vars[] = 'product_category';
-// 	$query_vars[] = 'product';
-// 	return $query_vars;
-// }
-// add_filter('query_vars', 'custom_query_vars');
-
-
-//Agreganto contenedor de Paises en Pagina del Producto (Admin) 
-
 
 /**
  * Implement the Custom Header feature.

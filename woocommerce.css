@@ -744,3 +744,19 @@ text-align: right !important;
 	border-radius: 15px;
     font-style: normal;
 }
+
+
+
+
+
+/* Header Top Menu */
+
+
+.top_menu li a {
+	margin-left:5px;
+}
+
+
+.top_menu li a {
+	color:#000000;
+}

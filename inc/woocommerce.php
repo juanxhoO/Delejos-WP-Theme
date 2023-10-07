@@ -242,27 +242,27 @@ if (!function_exists('ecommerce_delejos_woocommerce_header_cart')) {
 // Add a custom class to the <li> element containing the product item
 function custom_add_class_to_shop_loop_item($classes, $product_id)
 {
-	if (!is_singular('product') && !(is_cart() || is_checkout())) {
+	if (is_cart() && !is_product()) {
+		// Add your custom class here
+		$custom_class = 'my-custom-li-class col-md-3';
+		// Add the custom class to the classes array
+		$classes[] = $custom_class;
+	}
+
+	if(!is_product() && !is_cart()){
 		// Add your custom class here
 		$custom_class = 'my-custom-li-class col-md-4';
-
 		// Add the custom class to the classes array
 		$classes[] = $custom_class;
-
 	}
 
-	else{
-		// Add your custom class here
-		$custom_class = 'my-custom-li-class col-md-3 col-sm-6';
-
-		// Add the custom class to the classes array
-		$classes[] = $custom_class;
-
-	}
 	return $classes;
 }
 add_filter('woocommerce_post_class', 'custom_add_class_to_shop_loop_item', 10, 2);
 
+
+
+//Adding Row class for the loop product container in the UL
 function custom_add_product_list_container_class($html)
 {
 	// Add your custom class here
@@ -276,16 +276,6 @@ function custom_add_product_list_container_class($html)
 
 add_filter('woocommerce_product_loop_start', 'custom_add_product_list_container_class');
 
-/**
- * Change number or products per row to 3
- */
-add_filter('loop_shop_columns', 'loop_columns', 999);
-if (!function_exists('loop_columns')) {
-	function loop_columns()
-	{
-		return 3; // 3 products per row
-	}
-}
 
 //Hidding Related PRoducts in SInfgle Product Page
 
@@ -318,14 +308,13 @@ add_action('woocommerce_after_single_product_summary', 'close_custom_class_befor
 
 
 //Adding Custom Class to Gallery COntainer Single Product Page
-
 function add_custom_class_to_product_gallery_container()
 {
 	?>
 	<script type="text/javascript">
 		jQuery(document).ready(function ($) {
 			// Add your custom class to the product gallery thumbnail container
-			$('.single-product div.product .images').addClass('delejos-gallery-container col-md-6 justify-content-center align-items-center d-flex');
+			jQuery('.single-product div.product .images').addClass('delejos-gallery-container col-md-6 justify-content-center align-items-center d-flex');
 		});
 	</script>
 
@@ -591,5 +580,7 @@ function custom_div_after_shipping_form()
 
 add_action('woocommerce_before_checkout_shipping_form', 'custom_div_before_shipping_form');
 add_action('woocommerce_after_checkout_shipping_form', 'custom_div_after_shipping_form');
+
+
 
 
