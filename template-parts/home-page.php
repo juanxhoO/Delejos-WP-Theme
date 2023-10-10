@@ -75,7 +75,7 @@ get_header();
 	<div class="px-4 py-5 my-5 text-center row">
 
 
-		<form method="POST" class="row">
+		<form method="POST" action="" class="delejos_homepage_selector row" id="delejos_homepage_selector_form">
 
 			<!-- Country Selector -->
 			<h1 class="display-5 fw-bold text-body-emphasis">Centered hero</h1>
@@ -88,8 +88,9 @@ get_header();
 				echo '<div id="my_custom_countries_field">';
 
 				woocommerce_form_field(
-					'my_country_field',
+					'country',
 					array(
+						'id' => "delejos_country_selector",
 						'type' => 'select',
 						'required' => true,
 						'class' => array('chzn'),
@@ -101,32 +102,24 @@ get_header();
 				);
 				echo '</div>';
 
-				//	var_dump(get_allowed_countries());
 				?>
 			</div>
 
 			<!-- City Selector -->
 			<div class="col-lg-4 mx-auto">
+				<div id="my_custom_countries_field"><label>Select City</label><select required name="city"
+						id="delejos_city_selector" class="form-select form-select-lg">
+						<option>Select City</option>
+					</select>
+				</div>
 
-				<?php
-				// Get the list of allowed countries for various purposes (e.g., shipping and billing).
-				
-				global $wpdb;
 
-				$table_name = $wpdb->prefix . 'custom_cities';
-				$cities = $wpdb->get_results("SELECT city_name, country_code, ID FROM $table_name",ARRAY_A);
-
-				echo '<div id="my_custom_countries_field"><label>Select City</label><select class="form-select form-select-lg"><option>sdsd</option></select>';
-				echo '</div>';
-
-				//	var_dump(get_allowed_countries());
-				?>
 			</div>
 
 			<!--  Ocasion Selector -->
 			<div class="col-lg-4 mx-auto">
 				<label for="subcategory_dropdown">Select Ocasion:</label>
-				<select class="form-select form-select-lg" name="subcategory_dropdown" id="subcategory_dropdown">
+				<select class="form-select form-select-lg" name="ocasion" id="delejos_ocasion_selector">
 					<option>Select Ocasion</option>
 					<?php
 					$parent_category_slug = 'ocasion'; // Replace with the slug of the category you want to exclude.
@@ -151,7 +144,7 @@ get_header();
 					?>
 				</select>
 			</div>
-			<button type="submit" class="btn btn-primary btn-lg">Filter</button>
+			<button type="submit" class="btn btn-primary btn-lg disabled">Filter</button>
 		</form>
 	</div>
 </div>

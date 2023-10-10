@@ -22,12 +22,12 @@ define('_S_VERSION', '1.5.4222222122');
 function ecommerce_delejos_setup()
 {
 	/*
-																															 * Make theme available for translation.
-																															 * Translations can be filed in the /languages/ directory.
-																															 * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-																															padding: 40px 10%;nd and replace
-																															 * to change 'ecommerce-delejos' to the name of your theme in all the template files.
-																															 */
+																																   * Make theme available for translation.
+																																   * Translations can be filed in the /languages/ directory.
+																																   * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+																																  padding: 40px 10%;nd and replace
+																																   * to change 'ecommerce-delejos' to the name of your theme in all the template files.
+																																   */
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -792,7 +792,7 @@ function ecommerce_homepage_delejos_scripts()
 {
 	if (is_front_page()) {
 
-		wp_enqueue_script('home-script', get_template_directory_uri() . '/js/homepage_selector.js', array('jquery'), '6.0', true);
+		wp_enqueue_script('home-script', get_template_directory_uri() . '/js/homepage_selector.js', array('jquery'), '15.222222233', true);
 
 		//ajax_object
 		wp_localize_script('home-script', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
@@ -803,8 +803,7 @@ add_action('wp_enqueue_scripts', 'ecommerce_homepage_delejos_scripts');
 
 
 
-// Same handler function...
-add_action('wp_ajax_fetch_cities', 'fetch_cities');
+// Fetching Cities from Homepage Selector
 add_action('wp_ajax_nopriv_fetch_cities', 'fetch_cities');
 
 function fetch_cities()
@@ -833,4 +832,3 @@ function fetch_cities()
 
 	wp_die();
 }
-
