@@ -594,22 +594,3 @@ add_action('woocommerce_single_product_summary', 'woocommerce_output_product_dat
 
 
 //Include Menu in Single Product Pages
-
-function single_product_menu()
-{
-
-	echo ('<nav class="navbar navbar-expand-lg category-navbar navbar">');
-	// Replace 'your-menu-location' with the name of your custom menu.
-	wp_nav_menu(
-		array(
-			'theme_location' => 'category-menu',
-			'container_class' => 'collapse navbar-collapse justify-content-md-center',
-			// Change this to your menu location
-			'menu_class' => 'navbar-nav',
-			'walker' => new Bootstrap_Nav_Walker(),
-		)
-	);
-	echo ('</nav>');
-}
-
-add_action('woocommerce_before_single_product', 'single_product_menu');
