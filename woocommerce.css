@@ -762,3 +762,22 @@ text-align: right !important;
 .top_menu li a {
 	color:#000000;
 }
+
+
+
+/* Login nd Register Page */
+
+.delejos_login_container h2, 
+.delejos_register_container h2{
+	background: #f5edf3;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+
+
+.delejos_login_container form, 
+.delejos_register_container form{
+	padding: 0 90px;	
+}
