@@ -15,9 +15,22 @@
 get_header();
 ?>
 
-<main id="primary" class="site-main dsds">
+<main id="primary" class="site-main">
 	<div class="container content-menu">
-		<?php
+		<nav class="navbar navbar-expand-lg category-navbar navbar">
+				<?php
+				wp_nav_menu(
+					array(
+						'theme_location' => 'category-menu',
+						'container_class' => 'collapse navbar-collapse justify-content-md-center',
+						// Change this to your menu location
+						'menu_class' => 'navbar-nav',
+						'walker' => new Bootstrap_Nav_Walker(),
+					)
+				);
+				?>
+		</nav>
+		<?
 		while (have_posts()):
 			the_post();
 

@@ -10,7 +10,7 @@
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 }
-define('_S_VERSION', '1.5.4222222122');
+define('_S_VERSION', '1.5.42222222122');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.

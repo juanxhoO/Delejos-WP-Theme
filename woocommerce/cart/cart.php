@@ -18,28 +18,13 @@
 defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_cart'); ?>
-<div class="navbar navbar-expand-lg category-navbar">
-	<div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
-		<?php
-		wp_nav_menu(
-			array(
-				'theme_location' => 'category-menu',
-				// Change this to your menu location
-				'menu_class' => 'navbar-nav d-flex justify-content-between',
-				'walker' => new Bootstrap_Nav_Walker(),
-			)
-		);
-		?>
-	</div>
-</div>
+
 <div class="container delejos-container-cart">
-
-
 	<?php
 
 	// // Get the specific category ID or slug
 	// $category_id = 'extra-products';
-
+	
 	// // Query products from the specified category
 	// $args = array(
 	// 	'post_type' => 'product',
@@ -47,7 +32,7 @@ do_action('woocommerce_before_cart'); ?>
 	// 	'product_cat' => $category_id,
 	// );
 	// $query = new WP_Query($args);
-
+	
 	// // Check if there are products in the category
 	// if ($query->have_posts()) {
 	// 	echo '<h2>Products from the Specific Category</h2>';
@@ -58,7 +43,7 @@ do_action('woocommerce_before_cart'); ?>
 	// 	}
 	// 	wp_reset_postdata();
 	// }
-
+	
 	?>
 
 	<form class="woocommerce-cart-form" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">

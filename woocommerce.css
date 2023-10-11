@@ -706,6 +706,8 @@ p.no-comments {
 
 .widget_shopping_cart{
 	width: 320px !important;
+	padding: 15px;
+	box-sizing: border-box;
 }
 
 

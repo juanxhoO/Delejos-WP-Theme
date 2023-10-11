@@ -63,21 +63,20 @@ get_header();
 				<span class="visually-hidden">Next</span>
 			</button>
 		</div>
-		
+
 		<main id="primary" class="site-main container">
 			<nav class="navbar navbar-expand-lg category-navbar navbar">
-				<div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
-					<?php
-					wp_nav_menu(
-						array(
-							'theme_location' => 'category-menu',
-							// Change this to your menu location
-							'menu_class' => 'navbar-nav',
-							'walker' => new Bootstrap_Nav_Walker(),
-						)
-					);
-					?>
-				</div>
+				<?php
+				wp_nav_menu(
+					array(
+						'theme_location' => 'category-menu',
+						'container_class' => 'collapse navbar-collapse justify-content-md-center',
+						// Change this to your menu location
+						'menu_class' => 'navbar-nav',
+						'walker' => new Bootstrap_Nav_Walker(),
+					)
+				);
+				?>
 			</nav>
 			<?php
 			while (have_posts()):

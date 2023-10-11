@@ -72,7 +72,7 @@ get_header();
 
 <div class="container">
 
-	<div class="px-4 py-5 my-5 text-center row">
+	<div class="px-4 py-2 my-5 text-center row">
 
 
 		<form method="POST" action="" class="delejos_homepage_selector row" id="delejos_homepage_selector_form">
