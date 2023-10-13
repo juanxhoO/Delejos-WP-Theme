@@ -72,16 +72,13 @@
 					?>
 				</div>
 				<div>
-					currency exchanger
-				</div>
-				<div>
 					Languaje Siwtch
 				</div>
 			</div>
 			<!--Homepage Custom Menu  -->
 			<?php
 			if (!is_home() && !is_front_page()) { ?>
-				<div class="d-flex justify-content-around  container pt-4 pb-4">
+				<div class="d-flex justify-content-around align-items-center container pt-4 pb-4">
 					<div class="site-branding">
 						<?php
 						the_custom_logo();
@@ -93,10 +90,9 @@
 							</h1>
 							<?php
 						endif; ?>
-					</div><!-- .site-branding -->
-					<div class="d-flex align-items-center">
 
-					</div>
+					</div><!-- .site-branding -->
+					<div><img src="http://localhost/wp-content/uploads/2023/10/logosupspanish-1.png" ></div>
 				</div>
 			<?php } ?>
 		</header><!-- .entry-header -->
