@@ -43,28 +43,36 @@ get_header();
 			</div>
 		</nav>
 	</div>
-	<div class="d-flex align-items-center cart-container">
-		<?php
-		if (is_user_logged_in()) { ?>
-			<i class="fa-solid fa-user"></i><a
-				href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
-				title="<?php _e('My Account', 'woothemes'); ?>">
-				<?php _e('My Account', 'woothemes'); ?>
-			</a>
-		<?php } else { ?>
-			<i class="fa-solid fa-user"></i><a
-				href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
-				title="<?php _e('Login / Register', 'woothemes'); ?>">
-				<?php _e('Login / Register', 'woothemes'); ?>
-			</a>
-		<?php } ?>
+	<div class="d-flex align-items-center">
 
-		<i class="fa-solid fa-cart-shopping"></i>
-		<?php
-		if (function_exists('ecommerce_delejos_woocommerce_header_cart')) {
-			ecommerce_delejos_woocommerce_header_cart();
-		}
-		?>
+		<div>
+			<?php
+			if (is_user_logged_in()) { ?>
+				<i class="fa-solid fa-user"></i><a
+					href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+					title="<?php _e('My Account', 'woothemes'); ?>">
+					<?php _e('My Account', 'woothemes'); ?>
+				</a>
+			<?php } else { ?>
+				<i class="fa-solid fa-user"></i><a
+					href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+					title="<?php _e('Login / Register', 'woothemes'); ?>">
+					<?php _e('Login / Register', 'woothemes'); ?>
+				</a>
+			<?php } ?>
+
+		</div>
+
+
+		<div class="d-flex align-items-center cart-container">
+			<i class="fa-solid fa-cart-shopping"></i>
+			<?php
+			if (function_exists('ecommerce_delejos_woocommerce_header_cart')) {
+				ecommerce_delejos_woocommerce_header_cart();
+			}
+			?>
+		</div>
+
 	</div>
 </div>
 
@@ -78,7 +86,6 @@ get_header();
 		<form method="POST" action="" class="delejos_homepage_selector row" id="delejos_homepage_selector_form">
 
 			<!-- Country Selector -->
-			<h1 class="display-5 fw-bold text-body-emphasis">Centered hero</h1>
 			<div class="col-lg-4 mx-auto">
 
 				<?php
@@ -202,27 +209,6 @@ get_header();
 	</button>
 </div>
 
-
-<div class="container">
-	<div class="jumbotrons mt-5 row align-items-md-stretch">
-		<div class="col-md-6">
-			<div class="h-100 p-5 text-bg-dark rounded-3">
-				<h2>Change the background</h2>
-				<p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look.
-					Then, mix and match with additional component themes and more.</p>
-				<button class="btn btn-outline-light" type="button">Example button</button>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="h-100 p-5 text-bg-dark rounded-3">
-				<h2>Change the background</h2>
-				<p>Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look.
-					Then, mix and match with additional component themes and more.</p>
-				<button class="btn btn-outline-light" type="button">Example button</button>
-			</div>
-		</div>
-	</div>
-</div>
 <div class="container content-menu">
 	<?php
 	while (have_posts()):

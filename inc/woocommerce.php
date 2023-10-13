@@ -594,3 +594,24 @@ add_action('woocommerce_single_product_summary', 'woocommerce_output_product_dat
 
 
 //Include Menu in Single Product Pages
+
+
+
+function custom_div_before_navigation_account()
+{
+	echo '<div class="col-md-4 woocommerce-MyAccount-navigation">';
+}
+
+add_action('woocommerce_before_account_navigation', 'custom_div_before_navigation_account');
+
+
+
+function custom_div_after_navigation_account()
+{
+	echo '</div>';
+}
+
+add_action('woocommerce_after_account_navigation', 'custom_div_after_navigation_account');
+
+
+

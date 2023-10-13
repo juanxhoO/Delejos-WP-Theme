@@ -32,19 +32,19 @@
 				}
 				?> -->
 
-				<div id="secondary" class="col-3 col-md-3 mb-3">
+				<div id="secondary" class="col-md-3 mb-3 col-6 delejos_footer_menu">
 					<?php dynamic_sidebar('footer-1'); ?>
 				</div><!-- #secondary -->
 
-				<div id="secondary" class="col-3 col-md-3 mb-3">
+				<div id="secondary" class="col-md-3 mb-3 col-6 delejos_footer_menu">
 					<?php dynamic_sidebar('footer-2'); ?>
 				</div><!-- #secondary -->
 
-				<div id="secondary" class="col-3 col-md-3 mb-3">
+				<div id="secondary" class="col-md-3 mb-3 col-6 delejos_footer_menu">
 					<?php dynamic_sidebar('footer-3'); ?>
 				</div><!-- #secondary -->
 
-				<div id="secondary" class="col-3 col-md-3 mb-3">
+				<div id="secondary" class="col-md-3 mb-3 col-6 delejos_footer_menu">
 					<?php dynamic_sidebar('footer-4'); ?>
 				</div><!-- #secondary -->
 

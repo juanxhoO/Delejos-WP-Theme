@@ -486,14 +486,17 @@ ol {
 
 ul {
 	list-style: disc;
+	padding: 0;
 }
 
 ol {
 	list-style: decimal;
+	padding: 0;
 }
 
 li {
 	list-style: none;
+	padding: 0;
 }
 
 li>ul,
@@ -538,14 +541,10 @@ a {
 	text-decoration: none;
 }
 
-a:visited {
-	color: #800080;
-}
-
 a:hover,
 a:focus,
 a:active {
-	color: #191970;
+	color: #ca3416;
 }
 
 a:focus {
@@ -1047,5 +1046,39 @@ textarea {
 
 .menu-categories-menu-container li a {
 	font-weight: bold;
-	color:#423b3b;
+	color: #423b3b;
+}
+
+
+.menu-country-footer-container li:after {
+	margin-left: 20px;
+	content: "|";
+}
+
+.menu-country-footer-container li a {
+	color: #797979;
+}
+
+.delejos_footer_menu {
+	text-align: left;
+}
+
+/* Homepage */
+
+.delejos_home_menu {
+	font-weight: bold;
+}
+
+.delejos_home_menu a:hover {
+	color: #ca3416;
+}
+
+
+.entry-title {
+	display: none;
+}
+
+
+.cart-container {
+	margin-left: 20px;
 }
