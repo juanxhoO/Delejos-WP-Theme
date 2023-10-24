@@ -23,7 +23,7 @@ get_header();
 			</div>
 			<div class="carousel-inner">
 				<div class="carousel-item carousel-item-next carousel-item-start">
-					<img src="http://localhost/wp-content/uploads/2023/09/c_banner4.jpg">
+					<img src="http://localhost/wp-content/uploads/2023/10/c_banner1.jpg">
 					<div class="container">
 						<div class="carousel-caption text-start">
 							<h1>Example headline.</h1>
@@ -34,7 +34,7 @@ get_header();
 					</div>
 				</div>
 				<div class="carousel-item">
-					<img src="http://localhost/wp-content/uploads/2023/09/c_banner.jpg">
+					<img src="http://localhost/wp-content/uploads/2023/10/c_banner2.jpg">
 					<div class="container">
 						<div class="carousel-caption">
 							<h1>Another example headline.</h1>
@@ -44,7 +44,7 @@ get_header();
 					</div>
 				</div>
 				<div class="carousel-item active carousel-item-start">
-					<img src="http://localhost/wp-content/uploads/2023/09/c_banner3.jpg">
+					<img src="http://localhost/wp-content/uploads/2023/10/c_banner3.jpg">
 					<div class="container">
 						<div class="carousel-caption text-end">
 							<h1>One more for good measure.</h1>

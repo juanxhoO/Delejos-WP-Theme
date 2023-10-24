@@ -129,29 +129,25 @@ get_header();
 				<select class="form-select form-select-lg text-center" name="ocasion" id="delejos_ocasion_selector">
 					<option>Select Ocasion</option>
 					<?php
-					$parent_category_slug = 'ocasion'; // Replace with the slug of the category you want to exclude.
-					
-					// Get the category ID by slug.
-					$parent_category = get_term_by('slug', $parent_category_slug, 'product_cat');
+					// Get the product categories from WooCommerce.
+					$categories = get_terms(
+						array(
+							'taxonomy' => 'product_cat',
+							'hide_empty' => false,
+							'exclude' => array(15,20,22), // Replace 1 and 5 with the category IDs you want to exclude.
+						)
+					);
 
-					if ($parent_category && !is_wp_error($parent_category)) {
-						// Get subcategories of the parent category
-						$parent_category_id = $parent_category->term_id;
-						$subcategories = get_terms(
-							array(
-								'taxonomy' => 'product_cat',
-								'hide_empty' => false,
-								'parent' => $parent_category_id,
-							)
-						);
-						foreach ($subcategories as $subcategory) {
-							echo '<option value="' . esc_attr($subcategory->term_id) . '">' . esc_html($subcategory->name) . '</option>';
+					if ($categories && !is_wp_error($categories)) {
+						foreach ($categories as $category) {
+							echo '<option value="' . esc_attr($category->term_id) . '">' . esc_html($category->name) . '</option>';
 						}
 					}
+
 					?>
 				</select>
 			</div>
-			<button type="submit" class="btn btn-primary btn-lg disabled mt-4">Filter</button>
+			<button type="submit" class="btn btn-primary btn-lg mt-4">Filter</button>
 		</form>
 	</div>
 </div>
@@ -168,7 +164,7 @@ get_header();
 	</div>
 	<div class="carousel-inner">
 		<div class="carousel-item carousel-item-next carousel-item-start">
-			<img src="http://localhost/wp-content/uploads/2023/09/c_banner4.jpg">
+			<img src="http://localhost/wp-content/uploads/2023/10/c_banner1.jpg">
 			<div class="container">
 				<div class="carousel-caption text-start">
 					<h1>Example headline.</h1>
@@ -179,7 +175,7 @@ get_header();
 			</div>
 		</div>
 		<div class="carousel-item">
-			<img src="http://localhost/wp-content/uploads/2023/09/c_banner.jpg">
+			<img src="http://localhost/wp-content/uploads/2023/10/c_banner2.jpg">
 			<div class="container">
 				<div class="carousel-caption">
 					<h1>Another example headline.</h1>
@@ -189,7 +185,7 @@ get_header();
 			</div>
 		</div>
 		<div class="carousel-item active carousel-item-start">
-			<img src="http://localhost/wp-content/uploads/2023/09/c_banner3.jpg">
+			<img src="http://localhost/wp-content/uploads/2023/10/c_banner3.jpg">
 			<div class="container">
 				<div class="carousel-caption text-end">
 					<h1>One more for good measure.</h1>

@@ -22,12 +22,12 @@ define('_S_VERSION', '1.5.1112211112211222111231232122111212211111121');
 function ecommerce_delejos_setup()
 {
 	/*
-																																	  * Make theme available for translation.
-																																	  * Translations can be filed in the /languages/ directory.
-																																	  * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-																																	 padding: 40px 10%;nd and replace
-																																	  * to change 'ecommerce-delejos' to the name of your theme in all the template files.
-																																	  */
+																																   * Make theme available for translation.
+																																   * Translations can be filed in the /languages/ directory.
+																																   * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+																																  padding: 40px 10%;nd and replace
+																																   * to change 'ecommerce-delejos' to the name of your theme in all the template files.
+																																   */
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -881,120 +881,3 @@ function fetch_cities()
 
 	wp_die();
 }
-
-
-// function prepend_default_rewrite_rules( $rules ) {
-
-//     // Prepare for new rules
-//     $new_rules = [];
-
-//     // Set up languages, except default one
-//     $language_slugs = ['ar', 'ku'];
-
-//     // Generate language slug regex
-//     $languages_slug = '(?:' . implode( '/|', $language_slugs ) . '/)?';
-
-
-//     // Set up the list of rules that don't need to be prefixed
-//     $whitelist = [
-//         '^wp-json/?$',
-//         '^wp-json/(.*)?',
-//         '^index.php/wp-json/?$',
-//         '^index.php/wp-json/(.*)?'
-//     ];
-
-//     // Set up the new rule for home page
-//     $new_rules['(?:' . implode( '/|', $language_slugs ) . ')/?$'] = 'index.php';
-
-//     // Loop through old rules and modify them
-//     foreach ( $rules as $key => $rule ) {
-
-//         // Re-add those whitelisted rules without modification
-//         if ( in_array( $key, $whitelist ) ) {
-
-//             $new_rules[ $key ] = $rule;
-
-//         // Update rules starting with ^ symbol
-//         } elseif ( substr( $key, 0, 1 ) === '^' ) { 
-
-//             $new_rules[ $languages_slug . substr( $key, 1 ) ] = $rule;
-
-
-//         // Update other rules
-//         } else {
-
-//             $new_rules[ $languages_slug . $key ] = $rule;
-
-//         }
-//     }
-
-
-//     // Return out new rules
-//     return $new_rules;
-// }
-// add_filter( 'rewrite_rules_array', 'prepend_default_rewrite_rules' );
-
-
-
-
-
-
-function custom_rewrite_rules()
-{
-
-	$country_slugs = ['ecuador', 'colombia', 'argentina', 'brasil', 'chile', 'us', 'uk', 'france','ar'];
-
-    $country_pattern = '(' . implode('|', $country_slugs) . ')';
-
-    // Handle product pages
-    add_rewrite_rule(
-        '^(' . $country_pattern . ')/product/([^/]+)/?$',
-        'index.php?country=$matches[1]&product=$matches[2]',
-        'top'
-    );
-
-    // Handle category pages
-    add_rewrite_rule(
-        '^(' . $country_pattern . ')/product-category/([^/]+)/?$',
-        'index.php?country=$matches[1]&product_cat=$matches[2]',
-        'top'
-    );
-
-	add_rewrite_rule(
-		'^(ar|ku)/(.+?)/?$',
-		'index.php?country=$matches[1]&pagename=$matches[2]',
-		'top'
-	);
-
-
-}
-add_action('init', 'custom_rewrite_rules');
-
-function custom_query_vars($query_vars)
-{
-	$query_vars[] = 'country';
-	return $query_vars;
-}
-add_filter('query_vars', 'custom_query_vars');
-
-
-function custom_remove_product_category_base()
-{
-	add_filter('term_link', 'custom_term_permalink', 10, 3);
-}
-
-function custom_term_permalink($url, $term, $taxonomy)
-{
-	if ($taxonomy == 'product_cat') {
-		$url = str_replace('/product-category/', '/', $url);
-	}
-	return $url;
-}
-
-add_action('init', 'custom_remove_product_category_base');
-
-
-
-
-
-

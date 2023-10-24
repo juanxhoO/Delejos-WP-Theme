@@ -28,7 +28,7 @@ table.shop_table_responsive tr td::before {
 
 table.shop_table_responsive tr td.product-remove a {
 	text-align: left;
-	font-size: 3rem;
+	font-size: 2rem;
 }
 
 table.shop_table_responsive tr td.product-remove::before {
@@ -465,7 +465,7 @@ p.no-comments {
 }
 
 .woocommerce-error {
-	background-color: #e2401c;
+	background-color: #f5edf3;
 }
 
 .demo_store {
@@ -608,7 +608,6 @@ p.no-comments {
 }
 
 .single_add_to_cart_button.button {
-	background-color: transparent;
 	margin: 20px 0;
 	font-weight: bold;
 }
@@ -740,6 +739,8 @@ p.no-comments {
 
 .wc-proceed-to-checkout {
 	text-align: right;
+	float: right;	
+	margin-top: 30px;
 
 }
 
@@ -792,7 +793,7 @@ p.no-comments {
 	margin: 0 0 30px 0;
 	color: #423b3b;
 	background: #e5dbdb;
-	font-size: 1.5em;
+	font-size: 1.3em;
 }
 
 
@@ -842,4 +843,117 @@ p.no-comments {
 
 .woocommerce-Tabs-panel h2 {
 	display: none;
+}
+
+
+.single_add_to_cart_button{
+	padding: 20px 40px;
+    background: #000;
+    color: #fff;
+    font-weight: initial;
+    text-transform: uppercase;
+}
+
+
+
+/* Checkout Buttons */
+
+.shop_table .actions .coupon{
+	float: left;
+}
+
+.shop_table .actions .coupon #coupon_code{
+    line-height: 20px;
+    font-weight: inherit;
+    color: #999;
+    border: 1px solid #e8e8e8;
+    border-radius: 0;
+    outline: 0;
+    -webkit-appearance: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    -webkit-transition: border-color .2s ease-in-out;
+    -moz-transition: border-color .2s ease-in-out;
+    transition: border-color .2s ease-in-out;
+    margin: 0;
+    padding: 14px 20px;
+}
+
+
+.shop_table .actions button{
+	position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+    outline: 0;
+    font-size: 12px;
+    font-family: Montserrat,sans-serif;
+    line-height: 1.833em;
+    letter-spacing: .1em;
+    font-weight: 500;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    border-radius: 0;
+    margin: 0;
+    -webkit-transition: color .3s ease,background-color .3s ease,border-color .3s ease;
+    -moz-transition: color .3s ease,background-color .3s ease,border-color .3s ease;
+    transition: color .3s ease,background-color .3s ease,border-color .3s ease;
+    padding: 13px 42px;
+    color: #fff;
+	border: 1px solid transparent;
+    cursor: pointer;
+    z-index: 3;
+	background-color: #2b2b2b;
+}
+
+
+.shop_table .actions > button[type=submit]{
+	float: right;
+}
+
+
+
+
+.shop_table_responsive{
+	border-spacing: 20px 10px;
+	border-collapse: initial;
+}
+
+
+
+
+/* Checkout Copupn Code  Styles*/
+
+
+.checkout_coupon  .button{
+	position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+    outline: 0;
+    font-size: 12px;
+    font-family: Montserrat,sans-serif;
+    line-height: 1.833em;
+    letter-spacing: .1em;
+    font-weight: 500;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    border-radius: 0;
+    margin: 0;
+    -webkit-transition: color .3s ease,background-color .3s ease,border-color .3s ease;
+    -moz-transition: color .3s ease,background-color .3s ease,border-color .3s ease;
+    transition: color .3s ease,background-color .3s ease,border-color .3s ease;
+    padding: 13px 42px;
+    color: #fff;
+	border: 1px solid transparent;
+    cursor: pointer;
+    z-index: 3;
+	background-color: #2b2b2b;
+}
+
+
+
+
+.woocommerce-tabs.wc-tabs-wrapper{
+	padding: 20px;
 }
