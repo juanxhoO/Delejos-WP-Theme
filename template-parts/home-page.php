@@ -45,19 +45,20 @@ get_header();
 	</div>
 	<div class="d-flex align-items-center">
 
-		<div>
+		<div class="myaccount_container">
 			<?php
 			if (is_user_logged_in()) { ?>
-				<i class="fa-solid fa-user"></i><a
-					href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
-					title="<?php _e('My Account', 'woothemes'); ?>">
+				<a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+					title="<?php _e('My Account', 'woothemes'); ?>"><i class="fa-solid fa-user"></i>
 					<?php _e('My Account', 'woothemes'); ?>
 				</a>
 			<?php } else { ?>
-				<i class="fa-solid fa-user"></i><a
-					href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
-					title="<?php _e('Login / Register', 'woothemes'); ?>">
-					<?php _e('Login / Register', 'woothemes'); ?>
+				<a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+					title="<?php _e('Login / Register', 'woothemes'); ?>"><i class="fa-solid fa-user"></i>
+					<span>
+						<?php _e('Login / Register', 'woothemes'); ?>
+					</span>
+
 				</a>
 			<?php } ?>
 
@@ -80,7 +81,7 @@ get_header();
 
 <div class="container">
 
-	<div class="px-4 py-2 my-5 text-center row">
+	<div class="px-4 py-2 my-2 text-center row justify-content-center">
 
 
 		<form method="POST" action="" class="delejos_homepage_selector row" id="delejos_homepage_selector_form">
@@ -100,7 +101,6 @@ get_header();
 						'id' => "delejos_country_selector",
 						'type' => 'select',
 						'required' => true,
-						'class' => array('chzn'),
 						'input_class' => array('form-select form-select-lg'),
 						'label' => 'Select a country',
 						'placeholder' => __('Select Country'),
@@ -126,7 +126,7 @@ get_header();
 			<!--  Ocasion Selector -->
 			<div class="col-lg-4 mx-auto">
 				<label for="subcategory_dropdown">Select Ocasion:</label>
-				<select class="form-select form-select-lg" name="ocasion" id="delejos_ocasion_selector">
+				<select class="form-select form-select-lg text-center" name="ocasion" id="delejos_ocasion_selector">
 					<option>Select Ocasion</option>
 					<?php
 					$parent_category_slug = 'ocasion'; // Replace with the slug of the category you want to exclude.
@@ -151,7 +151,7 @@ get_header();
 					?>
 				</select>
 			</div>
-			<button type="submit" class="btn btn-primary btn-lg disabled">Filter</button>
+			<button type="submit" class="btn btn-primary btn-lg disabled mt-4">Filter</button>
 		</form>
 	</div>
 </div>

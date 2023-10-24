@@ -977,9 +977,9 @@ textarea {
 
 
 /* Dropdown on Hover */
-.nav-item.dropdown:hover .dropdown-menu {
+/* .nav-item.dropdown:hover .dropdown-menu {
 	display: block;
-}
+} */
 
 /* Ensure the dropdown menu appears above other content */
 .dropdown-menu {
@@ -999,7 +999,7 @@ textarea {
 }
 
 .top_menu .nav-item {
-	margin-right: 40px;
+	margin-right: 15px;
 }
 
 
@@ -1081,4 +1081,102 @@ textarea {
 
 .cart-container {
 	margin-left: 20px;
+}
+
+
+
+/* Mobile Menu  */
+
+/* .mobile_menu_container {
+	background-color: #222;
+	position: fixed;
+	height: 100%;
+	width: 260px;
+	top: 0;
+	color: #ffffff;
+	bottom: 0;
+	font-size: 0.9em;
+	left: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	z-index: 100000;
+	-webkit-transform: translate(-260px);
+	-moz-transform: translate(-260px);
+	-ms-transform: translate(-260px);
+	-o-transform: translate(-260px);
+	transform: translate(-260px);
+	-webkit-transition: all 0.2s ease-in-out 0s;
+	-moz-transition: all 0.2s ease-in-out 0s;
+	transition: all 0.2s ease-in-out 0s;
+}
+
+
+.mobile_menu_overlay{
+	background: #000;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 99999;
+    min-height: 100vh;
+    opacity: 0.35;
+    filter: alpha(opacity=35);
+    -webkit-transition: opacity 0.2s ease-in-out 0s;
+    -moz-transition: opacity 0.2s ease-in-out 0s;
+    transition: opacity 0.2s ease-in-out 0s;
+}
+
+
+.mobile_menu_container.opened{
+	-webkit-transition: all 0.3s ease-in-out 0s;
+    -moz-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+    z-index: 100000;
+    -webkit-transform: translate(0px);
+    -moz-transform: translate(0px);
+    -ms-transform: translate(0px);
+    -o-transform: translate(0px);
+    transform: translate(0px);
+}
+ */
+
+.mobile_menu_container .site-branding img{
+	max-width: 200px;
+	
+}
+.mobile_menu_container {
+	display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile_menu_container  {
+        display: block; /* Hide on small screens */
+    }
+
+	.myaccount_container span .cart-container span{
+		display: none;
+	}
+}
+
+
+
+/* Mobile Homeapge MEnu CHages */
+
+.site-branding img{
+	max-width: 200px;
+}
+@media (max-width: 768px) {
+ 
+	.myaccount_container span, .cart-container span{
+		display: none;
+	}
+}
+
+
+
+
+
+.desktop-category-navbar .dropdown:hover .dropdown-menu{
+display: block;
 }

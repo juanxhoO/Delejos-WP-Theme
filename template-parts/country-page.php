@@ -65,7 +65,7 @@ get_header();
 		</div>
 
 		<main id="primary" class="site-main container">
-			<nav class="navbar navbar-expand-lg category-navbar navbar">
+			<nav class="navbar navbar-expand-lg desktop-category-navbar navbar">
 				<?php
 				wp_nav_menu(
 					array(

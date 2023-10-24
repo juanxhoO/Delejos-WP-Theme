@@ -10,7 +10,7 @@
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 }
-define('_S_VERSION', '1.5.1112211111121');
+define('_S_VERSION', '1.5.1112211112211222111231232122111212211111121');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -22,12 +22,12 @@ define('_S_VERSION', '1.5.1112211111121');
 function ecommerce_delejos_setup()
 {
 	/*
-																																   * Make theme available for translation.
-																																   * Translations can be filed in the /languages/ directory.
-																																   * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-																																  padding: 40px 10%;nd and replace
-																																   * to change 'ecommerce-delejos' to the name of your theme in all the template files.
-																																   */
+																																	  * Make theme available for translation.
+																																	  * Translations can be filed in the /languages/ directory.
+																																	  * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+																																	 padding: 40px 10%;nd and replace
+																																	  * to change 'ecommerce-delejos' to the name of your theme in all the template files.
+																																	  */
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -221,7 +221,7 @@ function ecommerce_delejos_scripts()
 	wp_style_add_data('ecommerce-delejos-style', 'rtl', 'replace');
 
 	wp_enqueue_script('ecommerce-delejos-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true);
-	wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js', array('jquery'), '5.2.3', true);
+	wp_enqueue_script('bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js', array('jquery'), '5.2.3', true);
 	if (is_singular() && comments_open() && get_option('thread_comments')) {
 		wp_enqueue_script('comment-reply');
 	}
@@ -264,6 +264,55 @@ class Bootstrap_Nav_Walker extends Walker_Nav_Menu
 		// Add Bootstrap dropdown class to parent li if it has submenu items
 		if ($args->walker->has_children) {
 			$output .= ' <a href="' . esc_url($item->url) . '" class="nav-link dropdown-toggle" data-toggle="dropdown">';
+		} else {
+			$output .= ' <a href="' . esc_url($item->url) . '" class="nav-link">';
+		}
+
+		$output .= esc_html($item->title);
+		$output .= '</a>';
+	}
+
+	function end_lvl(&$output, $depth = 0, $args = null)
+	{
+		// Close the submenu ul
+		$output .= '</ul>';
+	}
+}
+
+
+class Mobile_Nav_Walker extends Walker_Nav_Menu
+{
+	function start_lvl(&$output, $depth = 0, $args = null)
+	{
+		// Add Bootstrap dropdown class to submenu ul
+		$output .= '<ul class="dropdown-menu">';
+	}
+
+	function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
+	{
+		if (empty($item->title)) {
+			return;
+		}
+		// Add Bootstrap classes to each menu item's <li> element
+		$classes = empty($item->classes) ? array() : (array) $item->classes;
+
+		$class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
+
+
+		// Check if the menu item has children (sub-menu)
+		$has_children = in_array('menu-item-has-children', $item->classes) || in_array('page-item-has-children', $item->classes);
+
+		if ($has_children) {
+			$class_names .= ' dropdown'; // Add "dropdown" class if it has children
+		}
+
+		$class_names = ' class="nav-item ' . esc_attr($class_names) . '"'; // Add "nav-item" class
+
+		$output .= '<li' . $class_names . '>';
+
+		// Add Bootstrap dropdown class to parent li if it has submenu items
+		if ($args->walker->has_children) {
+			$output .= ' <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="' . esc_url($item->url) . '">';
 		} else {
 			$output .= ' <a href="' . esc_url($item->url) . '" class="nav-link">';
 		}
@@ -832,3 +881,120 @@ function fetch_cities()
 
 	wp_die();
 }
+
+
+// function prepend_default_rewrite_rules( $rules ) {
+
+//     // Prepare for new rules
+//     $new_rules = [];
+
+//     // Set up languages, except default one
+//     $language_slugs = ['ar', 'ku'];
+
+//     // Generate language slug regex
+//     $languages_slug = '(?:' . implode( '/|', $language_slugs ) . '/)?';
+
+
+//     // Set up the list of rules that don't need to be prefixed
+//     $whitelist = [
+//         '^wp-json/?$',
+//         '^wp-json/(.*)?',
+//         '^index.php/wp-json/?$',
+//         '^index.php/wp-json/(.*)?'
+//     ];
+
+//     // Set up the new rule for home page
+//     $new_rules['(?:' . implode( '/|', $language_slugs ) . ')/?$'] = 'index.php';
+
+//     // Loop through old rules and modify them
+//     foreach ( $rules as $key => $rule ) {
+
+//         // Re-add those whitelisted rules without modification
+//         if ( in_array( $key, $whitelist ) ) {
+
+//             $new_rules[ $key ] = $rule;
+
+//         // Update rules starting with ^ symbol
+//         } elseif ( substr( $key, 0, 1 ) === '^' ) { 
+
+//             $new_rules[ $languages_slug . substr( $key, 1 ) ] = $rule;
+
+
+//         // Update other rules
+//         } else {
+
+//             $new_rules[ $languages_slug . $key ] = $rule;
+
+//         }
+//     }
+
+
+//     // Return out new rules
+//     return $new_rules;
+// }
+// add_filter( 'rewrite_rules_array', 'prepend_default_rewrite_rules' );
+
+
+
+
+
+
+function custom_rewrite_rules()
+{
+
+	$country_slugs = ['ecuador', 'colombia', 'argentina', 'brasil', 'chile', 'us', 'uk', 'france','ar'];
+
+    $country_pattern = '(' . implode('|', $country_slugs) . ')';
+
+    // Handle product pages
+    add_rewrite_rule(
+        '^(' . $country_pattern . ')/product/([^/]+)/?$',
+        'index.php?country=$matches[1]&product=$matches[2]',
+        'top'
+    );
+
+    // Handle category pages
+    add_rewrite_rule(
+        '^(' . $country_pattern . ')/product-category/([^/]+)/?$',
+        'index.php?country=$matches[1]&product_cat=$matches[2]',
+        'top'
+    );
+
+	add_rewrite_rule(
+		'^(ar|ku)/(.+?)/?$',
+		'index.php?country=$matches[1]&pagename=$matches[2]',
+		'top'
+	);
+
+
+}
+add_action('init', 'custom_rewrite_rules');
+
+function custom_query_vars($query_vars)
+{
+	$query_vars[] = 'country';
+	return $query_vars;
+}
+add_filter('query_vars', 'custom_query_vars');
+
+
+function custom_remove_product_category_base()
+{
+	add_filter('term_link', 'custom_term_permalink', 10, 3);
+}
+
+function custom_term_permalink($url, $term, $taxonomy)
+{
+	if ($taxonomy == 'product_cat') {
+		$url = str_replace('/product-category/', '/', $url);
+	}
+	return $url;
+}
+
+add_action('init', 'custom_remove_product_category_base');
+
+
+
+
+
+

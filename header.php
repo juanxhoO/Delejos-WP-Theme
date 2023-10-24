@@ -39,28 +39,32 @@
 					<li class="nav-item"><i class="fa-brands fa-whatsapp"></i><a href="">+1-646-597-8034 </a></li>
 					<li class="nav-item"><i class="fa-solid fa-envelope"></i><a
 							mailto="info@delejos.com">info@delejos.com</a></li>
-					<li class="nav-item">
-						<?php if (!is_front_page()) {
-							if (is_user_logged_in()) { ?>
-
-								<i class="fa-solid fa-user"></i><a
-									href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
-									title="<?php _e('My Account', 'woothemes'); ?>">
-									<?php _e('My Account', 'woothemes'); ?>
-								</a>
-							<?php } else { ?>
-								<i class="fa-solid fa-user"></i><a
-									href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
-									title="<?php _e('Login / Register', 'woothemes'); ?>">
-									<?php _e('Login / Register', 'woothemes'); ?>
-								</a>
-							<?php }
-						} ?>
-					</li>
 				</ul>
 
 				<div class="d-flex align-items-center cart-container">
+					<?php if (!is_front_page()) { ?>
+						<li class="nav-item">
 
+							<?php if (is_user_logged_in()) { ?>
+
+								<a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+									title="<?php _e('My Account', 'woothemes'); ?>"><i class="fa-solid fa-user"></i>
+									<span>
+										<?php _e('My Account', 'woothemes'); ?>
+									</span>
+
+								</a>
+							<?php } else { ?>
+								<a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+									title="<?php _e('Login / Register', 'woothemes'); ?>"><i class="fa-solid fa-user"></i>
+									<span>
+										<?php _e('Login / Register', 'woothemes'); ?>
+									</span>
+								</a>
+							<?php } ?>
+						</li>
+						<?php
+					} ?>
 					<?php
 					if (!is_front_page()) {
 
@@ -71,32 +75,51 @@
 					}
 					?>
 				</div>
-				<div>
-					currency exchanger
-				</div>
-				<div>
-					Languaje Siwtch
-				</div>
 			</div>
-			<!--Homepage Custom Menu  -->
+
+			<!--CountryPage Custom Menu  -->
 			<?php
 			if (!is_home() && !is_front_page()) { ?>
-				<div class="d-flex justify-content-around  container pt-4 pb-4">
-					<div class="site-branding">
-						<?php
-						the_custom_logo();
-						if (is_front_page() && is_home()):
-							?>
-							<h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
-									<?php bloginfo('name'); ?>
-								</a>
-							</h1>
+				<div class="justify-content-around  container pt-4 pb-4">
+					<nav class="navbar navbar-light bg-light">
+						<div class="container-fluid">
+							<div class="site-branding ">
+								<?php
+								the_custom_logo();
+								if (is_front_page() && is_home()):
+									?>
+									<h1 class="site-title"><a href="<?php echo esc_url(home_url('/')); ?>" rel="home">
+											<?php bloginfo('name'); ?>
+										</a>
+									</h1>
+									<?php
+								endif; ?>
+							
+							</div><!-- .site-branding -->
+							<div class="losgos2up d-none d-lg-block">
+									<div class="logossup">
+										<img src="https://es.delejos.com/images/logosupspanish.png">
+									</div>
+								</div>
+							<button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+								data-bs-target="#mobile_menu" aria-controls="navbarSupportedContent" aria-expanded="false"
+								aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
 							<?php
-						endif; ?>
-					</div><!-- .site-branding -->
-					<div class="d-flex align-items-center">
-
-					</div>
+							wp_nav_menu(
+								array(
+									'theme_location' => 'category-menu',
+									'container_class' => 'collapse navbar-collapse d-lg-none',
+									'container_id' => 'mobile_menu',
+									// Change this to your menu location
+									'menu_class' => 'navbar-nav me-auto mb-2 mb-lg-0',
+									'walker' => new Mobile_Nav_Walker(),
+								)
+							);
+							?>
+						</div>
+					</nav>
 				</div>
 			<?php } ?>
 		</header><!-- .entry-header -->

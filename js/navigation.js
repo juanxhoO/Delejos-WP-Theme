@@ -97,3 +97,15 @@
 		}
 	}
 }() );
+
+
+
+jQuery('.menu-overlay').click(function () {
+    var jQueryhtml = jQuery('html');
+    jQueryhtml.removeClass('menu-opened');
+    jQuery(this).removeClass('active');
+});
+
+jQuery('#hamburguer_menu_icon').click(function(e) {
+    jQuery(".mobile_menu_container").toggleClass('opened');
+});
