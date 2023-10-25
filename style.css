@@ -1136,20 +1136,22 @@ textarea {
 }
  */
 
-.mobile_menu_container .site-branding img{
+.mobile_menu_container .site-branding img {
 	max-width: 200px;
-	
+
 }
+
 .mobile_menu_container {
 	display: none;
 }
 
 @media (max-width: 768px) {
-    .mobile_menu_container  {
-        display: block; /* Hide on small screens */
-    }
+	.mobile_menu_container {
+		display: block;
+		/* Hide on small screens */
+	}
 
-	.myaccount_container span .cart-container span{
+	.myaccount_container span .cart-container span {
 		display: none;
 	}
 }
@@ -1158,20 +1160,33 @@ textarea {
 
 /* Mobile Homeapge MEnu CHages */
 
-.site-branding img{
+.site-branding img {
 	max-width: 200px;
 }
+
 @media (max-width: 768px) {
- 
-	.myaccount_container span, .cart-container span{
+
+	.myaccount_container span, .cart-container span {
 		display: none;
 	}
+
+	.shop_table .actions>button[type=submit] {
+		margin-top: 80px;
+		text-align: left;
+		display:block;
+	}
+
 }
 
+.desktop-category-navbar .dropdown:hover .dropdown-menu {
+	display: block;
+}
 
+.shop_table .actions>button[type=submit] {
+	text-align:right;
 
+}
 
-
-.desktop-category-navbar .dropdown:hover .dropdown-menu{
-display: block;
+.shop_table .actions{
+	text-align: right;
 }
