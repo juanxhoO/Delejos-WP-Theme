@@ -614,4 +614,65 @@ function custom_div_after_navigation_account()
 add_action('woocommerce_after_account_navigation', 'custom_div_after_navigation_account');
 
 
+//disabling Proceed checkout and Place roder Buttons if the order contains only extra products
+add_action('woocommerce_before_cart', 'custom_cart_validation_message');
+add_action('woocommerce_before_checkout_form', 'custom_cart_validation_message');
 
+function custom_cart_validation_message()
+{
+	if (cart_has_only_extras()) {
+
+		wc_print_notice('You cannot buy Extra and additionals products alone,a main product in your cart is neccesary to proceed.', 'error');
+
+		if (is_cart()) {
+
+			remove_action('woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20);
+		}
+
+		if (is_checkout()) {
+			remove_action('woocommerce_review_order_before_payment', 'woocommerce_button_place_order', 5);
+
+		}
+	}
+}
+
+function cart_has_only_extras()
+{
+	foreach (WC()->cart->get_cart() as $cart_item) {
+		$product = $cart_item['data'];
+		$product_categories = get_the_terms($product->get_id(), 'product_cat'); // Assuming 'product_cat' is the product category taxonomy
+
+		//var_dump($product_categories);
+		// Check if the product belongs to the "extras" category
+		$is_in_extras_category = false;
+		if ($product_categories) {
+			foreach ($product_categories as $category) {
+				if ($category->slug === 'extra-products') {
+					$is_in_extras_category = true;
+					break;
+				}
+			}
+		}
+
+		// If any product is not from the "extras" category, return false
+		if (!$is_in_extras_category) {
+			return false;
+		}
+	}
+
+	return true; // Only "extras" category products are in the cart
+}
+
+//Preventinf Checkout Form Submissions if there are only extra or additnionals products in the cart
+function check_custom_validation()
+{
+	// Add your custom validation logic here
+	if (cart_has_only_extras()) {
+		// Display an error message
+		wc_add_notice('Custom validation failed. Please review your cart.', 'error');
+		// Prevent the order from being placed
+		remove_action('woocommerce_checkout_order_processed', 'wc_send_transactional_email', 10, 3);
+		return false;
+	}
+}
+add_action('woocommerce_checkout_process', 'check_custom_validation');
