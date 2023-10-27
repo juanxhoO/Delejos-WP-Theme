@@ -676,3 +676,4 @@ function check_custom_validation()
 	}
 }
 add_action('woocommerce_checkout_process', 'check_custom_validation');
+

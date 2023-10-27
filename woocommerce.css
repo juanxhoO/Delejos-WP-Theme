@@ -949,3 +949,18 @@ p.no-comments {
 .woocommerce-tabs.wc-tabs-wrapper{
 	padding: 20px;
 }
+
+
+
+/* My Account changes */
+
+.delejos_active_tab{
+	background-color: #f5edf3;
+}
+
+
+
+.woocommerce-MyAccount-navigation{
+	font-weight: bold;
+
+}

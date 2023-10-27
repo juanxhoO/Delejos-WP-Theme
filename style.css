@@ -240,6 +240,14 @@ button,
 [type="submit"] {
 	-webkit-appearance: button;
 }
+/* 
+button,
+[type="submit"] {
+	background: #000;
+    color: #fff;
+    padding: 15px 25px;
+} */
+
 
 /**
  * Remove the inner border and padding in Firefox.

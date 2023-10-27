@@ -10,7 +10,7 @@
 if (!defined('_S_VERSION')) {
 	// Replace the version number of the theme on each release.
 }
-define('_S_VERSION', '1.5.111221111221122211123123212211121221111111111111111121');
+define('_S_VERSION', '1.5.111221111221122211123123212211112122111111111111111111211111111');
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
@@ -22,12 +22,12 @@ define('_S_VERSION', '1.5.111221111221122211123123212211121221111111111111111121
 function ecommerce_delejos_setup()
 {
 	/*
-																																	  * Make theme available for translation.
-																																	  * Translations can be filed in the /languages/ directory.
-																																	  * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-																																	 padding: 40px 10%;nd and replace
-																																	  * to change 'ecommerce-delejos' to the name of your theme in all the template files.
-																																	  */
+																																			* Make theme available for translation.
+																																			* Translations can be filed in the /languages/ directory.
+																																			* If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+																																		   padding: 40px 10%;nd and replace
+																																			* to change 'ecommerce-delejos' to the name of your theme in all the template files.
+																																			*/
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -575,7 +575,6 @@ function display_cities_and_countries()
 
 function enqueue_custom_script()
 {
-	wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/admin-city-shipping.js', array('jquery'), '11.0', true);
 	wp_localize_script('custom-script', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
 
 }
@@ -938,23 +937,23 @@ function fetch_cities()
 function custom_rewrite_rules()
 {
 
-	$country_slugs = ['ecuador', 'colombia', 'argentina', 'brasil', 'chile', 'us', 'uk', 'france','ar'];
+	$country_slugs = ['ecuador', 'colombia', 'argentina', 'brasil', 'chile', 'us', 'uk', 'france', 'ar'];
 
-    $country_pattern = '(' . implode('|', $country_slugs) . ')';
+	$country_pattern = '(' . implode('|', $country_slugs) . ')';
 
-    // Handle product pages
-    add_rewrite_rule(
-        '^(' . $country_pattern . ')/product/([^/]+)/?$',
-        'index.php?country=$matches[1]&product=$matches[2]',
-        'top'
-    );
+	// Handle product pages
+	add_rewrite_rule(
+		'^(' . $country_pattern . ')/product/([^/]+)/?$',
+		'index.php?country=$matches[1]&product=$matches[2]',
+		'top'
+	);
 
-    // Handle category pages
-    add_rewrite_rule(
-        '^(' . $country_pattern . ')/product-category/([^/]+)/?$',
-        'index.php?country=$matches[1]&product_cat=$matches[2]',
-        'top'
-    );
+	// Handle category pages
+	add_rewrite_rule(
+		'^(' . $country_pattern . ')/product-category/([^/]+)/?$',
+		'index.php?country=$matches[1]&product_cat=$matches[2]',
+		'top'
+	);
 
 	add_rewrite_rule(
 		'^(ar|ku)/(.+?)/?$',
@@ -988,6 +987,25 @@ function custom_term_permalink($url, $term, $taxonomy)
 }
 
 add_action('init', 'custom_remove_product_category_base');
+
+
+function enqueue_specific_scripts()
+{
+
+
+	if (is_front_page()) {
+
+		wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/admin-city-shipping.js', array('jquery'), '11.0', true);
+
+	}
+
+	if (function_exists('is_account_page') && is_account_page()) {
+
+		wp_enqueue_script('custom-script', get_template_directory_uri() . '/js/my-account.js', array('jquery'), '11.0', true);
+
+	}
+}
+add_action('wp_enqueue_scripts', 'enqueue_specific_scripts');
 
 
 
