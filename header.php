@@ -41,7 +41,7 @@
 							mailto="info@delejos.com">info@delejos.com</a></li>
 				</ul>
 
-				<div class="d-flex align-items-center cart-container">
+				<div class="d-flex align-items-center cart-container d-none d-lg-flex">
 					<?php if (!is_front_page()) { ?>
 						<li class="nav-item">
 
@@ -94,18 +94,59 @@
 									</h1>
 									<?php
 								endif; ?>
-							
+
 							</div><!-- .site-branding -->
 							<div class="losgos2up d-none d-lg-block">
-									<div class="logossup">
-										<img src="https://es.delejos.com/images/logosupspanish.png">
-									</div>
+								<div class="logossup">
+									<img src="https://es.delejos.com/images/logosupspanish.png">
 								</div>
-							<button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
-								data-bs-target="#mobile_menu" aria-controls="navbarSupportedContent" aria-expanded="false"
-								aria-label="Toggle navigation">
-								<span class="navbar-toggler-icon"></span>
-							</button>
+							</div>
+
+							<div class="delejos_mobile_container d-flex">
+								<div class="d-flex align-items-center cart-container mx-2">
+									<?php if (!is_front_page()) { ?>
+										<li class="nav-item mx-2">
+
+											<?php if (is_user_logged_in()) { ?>
+
+												<a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+													title="<?php _e('My Account', 'woothemes'); ?>"><i class="fa-solid fa-user"></i>
+													<span>
+														<?php _e('My Account', 'woothemes'); ?>
+													</span>
+
+												</a>
+											<?php } else { ?>
+												<a href="<?php echo get_permalink(get_option('woocommerce_myaccount_page_id')); ?>"
+													title="<?php _e('Login / Register', 'woothemes'); ?>"><i
+														class="fa-solid fa-user"></i>
+													<span>
+														<?php _e('Login / Register', 'woothemes'); ?>
+													</span>
+												</a>
+											<?php } ?>
+										</li>
+										<?php
+									} ?>
+									<?php
+									if (!is_front_page()) {
+
+										echo ("<i class='fa-solid fa-cart-shopping'></i>");
+										if (function_exists('ecommerce_delejos_woocommerce_header_cart')) {
+											ecommerce_delejos_woocommerce_header_cart();
+										}
+									}
+									?>
+								</div>
+
+								<button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+									data-bs-target="#mobile_menu" aria-controls="navbarSupportedContent"
+									aria-expanded="false" aria-label="Toggle navigation">
+									<span class="navbar-toggler-icon"></span>
+								</button>
+							</div>
+
+
 							<?php
 							wp_nav_menu(
 								array(

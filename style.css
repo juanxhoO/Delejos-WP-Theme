@@ -466,7 +466,7 @@ acronym {
 
 mark,
 ins {
-	background: #fff9c0;
+	
 	text-decoration: none;
 }
 
@@ -1197,4 +1197,10 @@ textarea {
 
 .shop_table .actions{
 	text-align: right;
+}
+
+
+
+.delejos_mobile_container{
+	
 }

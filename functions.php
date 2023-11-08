@@ -22,12 +22,12 @@ define('_S_VERSION', '1.5.111221111221122211123123212211112122111111111111111111
 function ecommerce_delejos_setup()
 {
 	/*
-																																			* Make theme available for translation.
-																																			* Translations can be filed in the /languages/ directory.
-																																			* If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
-																																		   padding: 40px 10%;nd and replace
-																																			* to change 'ecommerce-delejos' to the name of your theme in all the template files.
-																																			*/
+																																				  * Make theme available for translation.
+																																				  * Translations can be filed in the /languages/ directory.
+																																				  * If you're building a theme based on Delejos_Theme, use a fiborder: 1px solid #ccc;
+																																				 padding: 40px 10%;nd and replace
+																																				  * to change 'ecommerce-delejos' to the name of your theme in all the template files.
+																																				  */
 	load_theme_textdomain('ecommerce-delejos', get_template_directory() . '/languages');
 
 	// Add default posts and comments RSS feed links to head.
@@ -802,9 +802,6 @@ function custom_product_price_based_on_country($price, $product)
 	return $price; // Return the default price if no custom price is set
 }
 
-
-
-
 function custom_permalink_structure($post_link, $post)
 {
 	if (is_object($post) && $post->post_type == 'product') {
@@ -839,11 +836,21 @@ add_filter('post_type_link', 'custom_permalink_structure', 10, 2);
 function ecommerce_homepage_delejos_scripts()
 {
 	if (is_front_page()) {
-
+		
 		wp_enqueue_script('home-script', get_template_directory_uri() . '/js/homepage_selector.js', array('jquery'), '15.222222233', true);
 
 		//ajax_object
 		wp_localize_script('home-script', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+		
+		
+		
+		session_start();
+		$_SESSION['country'] = "Colombia";
+		$session_cart = $_SESSION['country'];
+		echo($session_cart);
+
+		//unset($_SESSION['user_name']);
+		session_destroy();
 
 	}
 }
@@ -857,16 +864,12 @@ add_action('wp_ajax_nopriv_fetch_cities', 'fetch_cities');
 function fetch_cities()
 {
 	$country_selected = isset($_GET['country']) ? sanitize_text_field($_GET['country']) : '';
-
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'custom_cities';
 	$query = $wpdb->prepare("SELECT city_name FROM $table_name WHERE country_code = %s", $country_selected);
 	$cities = $wpdb->get_results($query);
-
-
 	// Initialize the result array
 	$result = array();
-
 	// Check if there are results
 	if ($cities) {
 		// Loop through the results and add them to the result array
@@ -874,96 +877,80 @@ function fetch_cities()
 			$result[] = $city->city_name;
 		}
 	}
-
 	// Return the result (either an array of city names or an empty array)
 	echo json_encode($result);
-
 	wp_die();
 }
 
 
-// function prepend_default_rewrite_rules( $rules ) {
-
-//     // Prepare for new rules
-//     $new_rules = [];
-
-//     // Set up languages, except default one
-//     $language_slugs = ['ar', 'ku'];
-
-//     // Generate language slug regex
-//     $languages_slug = '(?:' . implode( '/|', $language_slugs ) . '/)?';
-
-
-//     // Set up the list of rules that don't need to be prefixed
-//     $whitelist = [
-//         '^wp-json/?$',
-//         '^wp-json/(.*)?',
-//         '^index.php/wp-json/?$',
-//         '^index.php/wp-json/(.*)?'
-//     ];
-
-//     // Set up the new rule for home page
-//     $new_rules['(?:' . implode( '/|', $language_slugs ) . ')/?$'] = 'index.php';
-
-//     // Loop through old rules and modify them
-//     foreach ( $rules as $key => $rule ) {
-
-//         // Re-add those whitelisted rules without modification
-//         if ( in_array( $key, $whitelist ) ) {
-
-//             $new_rules[ $key ] = $rule;
-
-//         // Update rules starting with ^ symbol
-//         } elseif ( substr( $key, 0, 1 ) === '^' ) { 
-
-//             $new_rules[ $languages_slug . substr( $key, 1 ) ] = $rule;
-
-
-//         // Update other rules
-//         } else {
-
-//             $new_rules[ $languages_slug . $key ] = $rule;
-
-//         }
-//     }
-
-
-//     // Return out new rules
-//     return $new_rules;
-// }
-// add_filter( 'rewrite_rules_array', 'prepend_default_rewrite_rules' );
-
-
-function custom_rewrite_rules()
+function prepend_default_rewrite_rules($rules)
 {
+	// Prepare for new rules
+	$new_rules = [];
+	// Set up languages, except default one
+	$language_slugs = ['ar', 'ku', 'de'];
+	// Generate language slug regex
+	$languages_slug = '(?:' . implode('/|', $language_slugs) . '/)?';
 
-	$country_slugs = ['ecuador', 'colombia', 'argentina', 'brasil', 'chile', 'us', 'uk', 'france', 'ar'];
-
-	$country_pattern = '(' . implode('|', $country_slugs) . ')';
-
-	// Handle product pages
-	add_rewrite_rule(
-		'^(' . $country_pattern . ')/product/([^/]+)/?$',
-		'index.php?country=$matches[1]&product=$matches[2]',
-		'top'
-	);
-
-	// Handle category pages
-	add_rewrite_rule(
-		'^(' . $country_pattern . ')/product-category/([^/]+)/?$',
-		'index.php?country=$matches[1]&product_cat=$matches[2]',
-		'top'
-	);
-
-	add_rewrite_rule(
-		'^(ar|ku)/(.+?)/?$',
-		'index.php?country=$matches[1]&pagename=$matches[2]',
-		'top'
-	);
-
-
+	// Set up the list of rules that don't need to be prefixed
+	$whitelist = [
+		'^wp-json/?$',
+		'^wp-json/(.*)?',
+		'^index.php/wp-json/?$',
+		'^index.php/wp-json/(.*)?'
+	];
+	// Set up the new rule for home page
+	$new_rules['(?:' . implode('/|', $language_slugs) . ')/?$'] = 'index.php';
+	// Loop through old rules and modify them
+	foreach ($rules as $key => $rule) {
+		// Re-add those whitelisted rules without modification
+		if (in_array($key, $whitelist)) {
+			$new_rules[$key] = $rule;
+			// Update rules starting with ^ symbol
+		} elseif (substr($key, 0, 1) === '^') {
+			$new_rules[$languages_slug . substr($key, 1)] = $rule;
+			// Update other rules
+		} else {
+			$new_rules[$languages_slug . $key] = $rule;
+		}
+	}
+	// Return out new rules
+	return $new_rules;
 }
-add_action('init', 'custom_rewrite_rules');
+add_filter('rewrite_rules_array', 'prepend_default_rewrite_rules');
+
+
+// function custom_rewrite_rules()
+// {
+
+// 	$country_slugs = ['ecuador', 'colombia', 'argentina', 'brasil', 'chile', 'us', 'uk', 'france', 'ar'];
+
+// 	$country_pattern = '(' . implode('|', $country_slugs) . ')';
+
+// 	// Handle product pages
+// 	add_rewrite_rule(
+// 		'^(' . $country_pattern . ')/product/([^/]+)/?$',
+// 		'index.php?country=$matches[1]&product=$matches[2]',
+// 		'top'
+// 	);
+
+// 	// Handle category pages
+// 	add_rewrite_rule(
+// 		'^(' . $country_pattern . ')/product-category/([^/]+)/?$',
+// 		'index.php?country=$matches[1]&product_cat=$matches[2]',
+// 		'top'
+// 	);
+
+// 	add_rewrite_rule(
+// 		'^(ar|ku)/(.+?)/?$',
+// 		'index.php?country=$matches[1]&pagename=$matches[2]',
+// 		'top'
+// 	);
+
+
+
+// }
+// add_action('init', 'custom_rewrite_rules');
 
 function custom_query_vars($query_vars)
 {
@@ -971,23 +958,6 @@ function custom_query_vars($query_vars)
 	return $query_vars;
 }
 add_filter('query_vars', 'custom_query_vars');
-
-
-function custom_remove_product_category_base()
-{
-	add_filter('term_link', 'custom_term_permalink', 10, 3);
-}
-
-function custom_term_permalink($url, $term, $taxonomy)
-{
-	if ($taxonomy == 'product_cat') {
-		$url = str_replace('/product-category/', '/', $url);
-	}
-	return $url;
-}
-
-add_action('init', 'custom_remove_product_category_base');
-
 
 function enqueue_specific_scripts()
 {
@@ -1006,9 +976,6 @@ function enqueue_specific_scripts()
 	}
 }
 add_action('wp_enqueue_scripts', 'enqueue_specific_scripts');
-
-
-
 
 
 
