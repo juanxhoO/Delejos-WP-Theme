@@ -361,6 +361,9 @@ if (defined('JETPACK__VERSION')) {
 if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
+
+
+
 function create_custom_city_table()
 {
 	global $wpdb;
@@ -396,12 +399,12 @@ function create_custom_admin_menu()
 {
 	add_menu_page(
 		'Custom Admin Section',
-		'Flat Rate Shipping',
+		'Cities Flat Rate',
 		'manage_options',
 		// Minimum capability required to access
 		'custom-admin-section',
 		'custom_admin_page_content',
-		'dashicons-admin-generic' // Icon for the menu item (optional)
+		'dashicons-car' // Icon for the menu item (optional)
 	);
 }
 add_action('admin_menu', 'create_custom_admin_menu');
@@ -423,7 +426,7 @@ function custom_admin_page_content()
 				<option value="">Select Country</option>
 
 				<?php
-				$countries = WC()->countries->get_countries();
+				$countries = WC()->countries->get_allowed_countries();
 
 				foreach ($countries as $code => $name) {
 					echo '<option value="' . esc_attr($code) . '">' . esc_html($name) . '</option>';
@@ -433,13 +436,11 @@ function custom_admin_page_content()
 
 			<label for="flat_rate_price">Flat Rate Price</label>
 			<input type="number" step="0.01" id="price" name="flat_rate_price" required /><br />
-			<input type="submit" name="custom_shipping_submit" value="Submit">
+			<input type="submit" name="custom_shipping_submit" value="Agregar Ciudad">
 		</form>
 
 		<?php
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['custom_shipping_submit'])) {
-
-
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'custom_cities';
 
@@ -475,53 +476,24 @@ function custom_admin_page_content()
 		?>
 	</div>
 	<?php
-	display_cities_and_countries();
+	display_cities_by_country();
 
 }
 
-function display_cities_and_countries()
+function display_cities_by_country()
 {
 	global $wpdb;
 
 	$table_name = $wpdb->prefix . 'custom_cities';
-	if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_prices'])) {
-
-		// Handle the form submission to update prices here
-		$updated_prices = $_POST['updated_prices']; // This should be an array containing city names and updated prices
-
-		echo ($updated_prices);
-
-		if (!empty($updated_prices)) {
-			foreach ($updated_prices as $city_name => $new_price) {
-				// Sanitize the input data and update the database
-				$city_name = sanitize_text_field($city_name);
-				$new_price = floatval($new_price);
-
-				$wpdb->update(
-					$table_name,
-					array('flat_rate' => $new_price),
-					array('name' => $city_name)
-				);
-			}
-
-			// Optionally, redirect or display a success message
-			// Example: wp_redirect('success-page.php');
-			// or
-			// echo '<div class="success-message">Prices updated successfully!</div>';
-		}
-	}
-
 
 	// Retrieve cities and countries from the custom table
 	$results = $wpdb->get_results("SELECT city_name, country_code, flat_rate, ID FROM $table_name", ARRAY_A);
-
 
 	if (!empty($results)) {
 		echo '<form method="post" action="">';
 		echo '<label for="country_select">Select a Country:</label>';
 		echo '<select id="country_select">';
 		echo '<option value="all">All Countries</option>';
-
 
 		// Create an array to store cities by country
 		$cities_by_country = array();
@@ -539,34 +511,34 @@ function display_cities_and_countries()
 		}
 
 		// Generate the select options for countries
-
 		$countries = WC()->countries->get_countries();
-
-
 		foreach ($cities_by_country as $country_code => $cities) {
 			echo '<option value="' . esc_attr($country_code) . '">' . esc_html($countries[$country_code]) . '</option>';
 		}
 
-
 		echo '</select>';
-		echo '<input type="submit" name="update_prices" value="Update Prices">';
+		echo '<input type="submit" name="update_prices" value="Ver Ciudades">';
 		echo '</form>';
 
 		// Display cities based on the selected country
 		echo '<div id="cities_display">';
+		if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_prices'])) {
 
-		foreach ($cities_by_country as $country_code => $cities) {
-			echo '<div class="country-cities" data-country="' . esc_attr($country_code) . '">';
-			foreach ($cities as $city_data) {
-				echo '<p>';
-				echo '<strong>' . esc_html($city_data['city']) . ':</strong> ';
-				echo '<input type="text" class="edit-price" value="' . esc_attr($city_data['price']) . '">';
-				echo '<button data-value="' . esc_attr($city_data['id']) . '" class="delete-city">Delete</button>';
-				echo '<button data-value="' . esc_attr($city_data['id']) . '" class="update-city">Update</button>';
-				echo '</p>';
-			}
-			echo '</div>';
-		}
+            $selected_country = "EC";
+			echo($_POST['update_prices']);			
+            if ($selected_country !== 'all' && isset($cities_by_country[$selected_country])) {
+                echo '<div class="country-cities" data-country="' . esc_attr($selected_country) . '">';
+                foreach ($cities_by_country[$selected_country] as $city_data) {
+                    echo '<p>';
+                    echo '<strong>' . esc_html($city_data['city']) . ':</strong> ';
+                    echo '<input type="text" class="edit-price" value="' . esc_attr($city_data['price']) . '">';
+                    echo '<button data-value="' . esc_attr($city_data['id']) . '" class="delete-city">Delete</button>';
+                    echo '<button data-value="' . esc_attr($city_data['id']) . '" class="update-city">Update</button>';
+                    echo '</p>';
+                }
+                echo '</div>';
+            }
+        }
 		echo '</div>';
 	} else {
 		echo '<p>No cities and countries found.</p>';
@@ -576,7 +548,6 @@ function display_cities_and_countries()
 function enqueue_custom_script()
 {
 	wp_localize_script('custom-script', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
-
 }
 
 add_action('admin_enqueue_scripts', 'enqueue_custom_script');
@@ -635,9 +606,6 @@ function update_city()
 	wp_die();
 }
 
-
-
-
 // Same handler function...
 add_action('wp_ajax_update_cities', 'get_cities');
 function get_cities()
@@ -670,10 +638,6 @@ function get_cities()
 
 	wp_die();
 }
-
-
-
-
 
 // Add custom fields for regular price, sale price, sale schedule, and multiple countries to the product's General tab
 function add_custom_field_to_product_general_tab()
