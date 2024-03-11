@@ -368,26 +368,27 @@ function create_custom_city_table()
 
 	$table_name = $wpdb->prefix . 'custom_cities';
 
-	// Check if the table already exists
-	if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+	// // Check if the table already exists
+	// if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 
-		$sql = "CREATE TABLE $table_name (
-            id INT NOT NULL AUTO_INCREMENT,
-            city_name VARCHAR(255) NOT NULL,
-            country_code VARCHAR(2) NOT NULL,
-            flat_rate DECIMAL(10, 2) NOT NULL,
-            PRIMARY KEY (id)
-        )";
+	// 	$sql = "CREATE TABLE $table_name (
+    //         id INT NOT NULL AUTO_INCREMENT,
+    //         city_name VARCHAR(255) NOT NULL,
+    //         country_code VARCHAR(2) NOT NULL,
+    //         flat_rate DECIMAL(10, 2) NOT NULL,
+    //         PRIMARY KEY (id)
+    //     )";
 
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-		dbDelta($sql);
-	}
+	// 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	// 	dbDelta($sql);
+	// }
+	echo("database created");
 }
 
 // Hook the table creation function to a custom action for testing purposes
 add_action('create_custom_city_table_hook', 'create_custom_city_table');
 
-do_action("create_custom_city_table_hook");
+//do_action("create_custom_city_table_hook");
 // To create the table, you can manually trigger the action when needed for testing
 // For example, you can add the following code where you want to trigger the table creation:
 // do_action('create_custom_city_table_hook');

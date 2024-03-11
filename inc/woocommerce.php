@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WooCommerce Compatibility File
  *
@@ -119,9 +120,9 @@ if (!function_exists('ecommerce_delejos_woocommerce_wrapper_before')) {
 	 */
 	function ecommerce_delejos_woocommerce_wrapper_before()
 	{
-		?>
+?>
 		<main id="primary" class="site-main container">
-			<?php
+		<?php
 	}
 }
 add_action('woocommerce_before_main_content', 'ecommerce_delejos_woocommerce_wrapper_before');
@@ -138,7 +139,7 @@ if (!function_exists('ecommerce_delejos_woocommerce_wrapper_after')) {
 	{
 		?>
 		</main><!-- #main -->
-		<?php
+	<?php
 	}
 }
 add_action('woocommerce_after_main_content', 'ecommerce_delejos_woocommerce_wrapper_after');
@@ -185,9 +186,8 @@ if (!function_exists('ecommerce_delejos_woocommerce_cart_link')) {
 	 */
 	function ecommerce_delejos_woocommerce_cart_link()
 	{
-		?>
-		<a class="cart-contents" href="<?php echo esc_url(wc_get_cart_url()); ?>"
-			title="<?php esc_attr_e('View your shopping cart', 'ecommerce-delejos'); ?>">
+	?>
+		<a class="cart-contents" href="<?php echo esc_url(wc_get_cart_url()); ?>" title="<?php esc_attr_e('View your shopping cart', 'ecommerce-delejos'); ?>">
 			<?php
 			$item_count_text = sprintf(
 				/* translators: number of items in the mini cart. */
@@ -201,7 +201,7 @@ if (!function_exists('ecommerce_delejos_woocommerce_cart_link')) {
 				<?php echo esc_html($item_count_text); ?>
 			</span>
 		</a>
-		<?php
+	<?php
 	}
 }
 
@@ -218,7 +218,7 @@ if (!function_exists('ecommerce_delejos_woocommerce_header_cart')) {
 		} else {
 			$class = '';
 		}
-		?>
+	?>
 		<ul id="site-header-cart" class="site-header-cart">
 			<li class="<?php echo esc_attr($class); ?>">
 				<?php ecommerce_delejos_woocommerce_cart_link(); ?>
@@ -233,7 +233,7 @@ if (!function_exists('ecommerce_delejos_woocommerce_header_cart')) {
 				?>
 			</li>
 		</ul>
-		<?php
+	<?php
 	}
 }
 
@@ -312,13 +312,13 @@ function add_custom_class_to_product_gallery_container()
 {
 	?>
 	<script type="text/javascript">
-		jQuery(document).ready(function ($) {
+		jQuery(document).ready(function($) {
 			// Add your custom class to the product gallery thumbnail container
 			jQuery('.single-product div.product .images').addClass('delejos-gallery-container col-md-6 justify-content-center align-items-center d-flex');
 		});
 	</script>
 
-	<?php
+<?php
 }
 add_action('woocommerce_before_single_product_summary', 'add_custom_class_to_product_gallery_container');
 
@@ -443,7 +443,6 @@ function save_custom_account_fields($user_id)
 	if (isset($_POST['country'])) {
 		update_user_meta($user_id, 'country', sanitize_text_field($_POST['country']));
 	}
-
 }
 
 add_action('woocommerce_edit_account_form_start', 'display_custom_account_fields');
@@ -453,17 +452,16 @@ function display_custom_account_fields()
 	$user = wp_get_current_user();
 	$user_id = $user->ID;
 	$phone_value = get_user_meta($user_id, 'phone', true);
-	?>
+?>
 
 	<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
 		<label for="phone">
 			<?php _e('Phone Number', 'woocommerce'); ?>
 			<span class="required">*</span>
 		</label>
-		<input required type="tel" class="woocommerce-Input woocommerce-Input--text input-text" name="phone" id="phone"
-			value="<?php echo esc_attr($phone_value); ?>" />
+		<input required type="tel" class="woocommerce-Input woocommerce-Input--text input-text" name="phone" id="phone" value="<?php echo esc_attr($phone_value); ?>" />
 	</p>
-	<?php
+<?php
 }
 
 
@@ -493,15 +491,14 @@ add_filter('woocommerce_register_form', 'add_confirm_password_field');
 
 function add_confirm_password_field()
 {
-	?>
+?>
 	<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 		<label for="reg_confirm_password">
 			<?php _e('Confirm Password', 'woocommerce'); ?><span class="required">*</span>
 		</label>
-		<input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="confirm_password"
-			id="reg_confirm_password" required />
+		<input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="confirm_password" id="reg_confirm_password" required />
 	</p>
-	<?php
+<?php
 }
 function enqueue_password_confirmation_script()
 {
@@ -631,7 +628,6 @@ function custom_cart_validation_message()
 
 		if (is_checkout()) {
 			remove_action('woocommerce_review_order_before_payment', 'woocommerce_button_place_order', 5);
-
 		}
 	}
 }
@@ -676,4 +672,16 @@ function check_custom_validation()
 	}
 }
 add_action('woocommerce_checkout_process', 'check_custom_validation');
+
+
+
+// Save delivery date in the order
+function save_delivery_date_to_order($order_id)
+{
+	if ($_POST['delivery_date']) {
+		update_post_meta($order_id, 'Delivery Date', sanitize_text_field($_POST['delivery_date']));
+	}
+}
+
+//add_action('woocommerce_checkout_update_order_meta', 'save_delivery_date_to_order');
 
