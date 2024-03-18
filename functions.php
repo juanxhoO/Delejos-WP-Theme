@@ -359,39 +359,26 @@ if (defined('JETPACK__VERSION')) {
 if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
+//Creating Cities SQL Table 
+	function create_custom_cities_table(){
 
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'custom_cities';
+		if (!$table_name) {
+			// Check if the table already exists
+			$sql = "CREATE TABLE $table_name (
+					id INT NOT NULL AUTO_INCREMENT,
+					stateCode VARCHAR(4) NOT NULL,
+					countryCode VARCHAR(4) NOT NULL,
+					cityName VARCHAR(255) NOT NULL,
+					PRIMARY KEY (id)
+				)";
+			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+			dbDelta($sql);
+		}
+	}
 
-
-function create_custom_city_table()
-{
-	global $wpdb;
-
-	$table_name = $wpdb->prefix . 'custom_cities';
-
-	// // Check if the table already exists
-	// if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
-
-	// 	$sql = "CREATE TABLE $table_name (
-    //         id INT NOT NULL AUTO_INCREMENT,
-    //         city_name VARCHAR(255) NOT NULL,
-    //         country_code VARCHAR(2) NOT NULL,
-    //         flat_rate DECIMAL(10, 2) NOT NULL,
-    //         PRIMARY KEY (id)
-    //     )";
-
-	// 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-	// 	dbDelta($sql);
-	// }
-	echo("database created");
-}
-
-// Hook the table creation function to a custom action for testing purposes
-add_action('create_custom_city_table_hook', 'create_custom_city_table');
-
-//do_action("create_custom_city_table_hook");
-// To create the table, you can manually trigger the action when needed for testing
-// For example, you can add the following code where you want to trigger the table creation:
-// do_action('create_custom_city_table_hook');
+	add_action('init','create_custom_cities_table');
 
 // Add custom fields for regular price, sale price, sale schedule, and multiple countries to the product's General tab
 function add_custom_field_to_product_general_tab()
