@@ -364,7 +364,10 @@ if (class_exists('WooCommerce')) {
 
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'custom_cities';
-		if (!$table_name) {
+
+		$table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'");
+		if (!$table_exists) {
+			echo("dsdsd");
 			// Check if the table already exists
 			$sql = "CREATE TABLE $table_name (
 					id INT NOT NULL AUTO_INCREMENT,
@@ -486,7 +489,7 @@ add_action('woocommerce_process_product_meta', 'save_custom_field_data');
 // Replace 'Country1' with the actual country name or detection logic
 
 // Hook into the WooCommerce price calculation
-add_filter('woocommerce_get_price', 'custom_product_price_based_on_country', 10, 2);
+add_filter('woocommerce_product_get_price', 'custom_product_price_based_on_country', 10, 2);
 
 function custom_product_price_based_on_country($price, $product)
 {
