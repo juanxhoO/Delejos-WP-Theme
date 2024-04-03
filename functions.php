@@ -226,6 +226,83 @@ function ecommerce_delejos_scripts()
 }
 add_action('wp_enqueue_scripts', 'ecommerce_delejos_scripts');
 
+//Adding Custom Checkout Fields
+
+//Adding Shipping Phone Number
+add_filter('woocommerce_checkout_fields', 'bbloomer_shipping_phone_checkout');
+
+function bbloomer_shipping_phone_checkout($fields)
+{
+	$fields['shipping']['shipping_phone'] = array(
+		'label' => 'Phone',
+		'type' => 'tel',
+		'required' => true,
+		'class' => array('form-row-wide'),
+		'validate' => array('phone'),
+		'autocomplete' => 'tel',
+		'priority' => 25,
+	);
+	return $fields;
+}
+
+add_action('woocommerce_admin_order_data_after_shipping_address', 'bbloomer_shipping_phone_checkout_display');
+
+function bbloomer_shipping_phone_checkout_display($order)
+{
+	echo '<p><b>Shipping Phone:</b> ' . get_post_meta($order->get_id(), '_shipping_phone', true) . '</p>';
+}
+
+
+// //Adding Shipping Phone Number
+add_filter( 'woocommerce_checkout_fields', 'convert_shipping_city_to_selector', 10, 1 );
+
+function convert_shipping_city_to_selector( $fields ) {
+    // Replace the shipping city field with a select field
+    $fields['shipping']['shipping_city'] = array(
+        'label'       => __('City', 'woocommerce'),
+        'required'    => true,
+        'type'        => 'select',
+        'options'     => array(
+            ''           => __('Select a city', 'woocommerce'), // Placeholder option
+            'city1'      => __('City 1', 'woocommerce'), // Replace 'city1' with actual city name
+            'city2'      => __('City 2', 'woocommerce'), // Replace 'city2' with actual city name
+            // Add more cities as needed
+        ),
+        'class'       => array( 'form-row-wide' ),
+        'autocomplete'=> 'address-level2',
+        'priority'    => 40,
+    );
+
+    return $fields;
+}
+
+
+
+//Adding Message Input Field
+
+add_filter('woocommerce_checkout_fields', 'shipping_message_checkout');
+
+function shipping_message_checkout($fields)
+{
+	$fields['shipping']['shipping_message'] = array(
+		'label' => 'Message',
+		'type' => 'textarea',
+		'required' => false,
+		'class' => array('form-row-wide'),
+		'validate' => array('phone'),
+		'priority' => 25,
+	);
+	return $fields;
+}
+
+add_action('woocommerce_admin_order_data_after_shipping_address', 'shipping_message_checkout_label');
+
+function shipping_message_checkout_label($order)
+{
+	echo '<p><b>Message:</b> ' . get_post_meta($order->get_id(), '_shipping_message', true) . '</p>';
+}
+
+
 // Custom function to get products by country attribute
 
 
@@ -360,28 +437,29 @@ if (class_exists('WooCommerce')) {
 	require get_template_directory() . '/inc/woocommerce.php';
 }
 //Creating Cities SQL Table 
-	function create_custom_cities_table(){
+function create_custom_cities_table()
+{
 
-		global $wpdb;
-		$table_name = $wpdb->prefix . 'custom_cities';
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'custom_cities';
 
-		$table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'");
-		if (!$table_exists) {
-			echo("dsdsd");
-			// Check if the table already exists
-			$sql = "CREATE TABLE $table_name (
+	$table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'");
+	if (!$table_exists) {
+		echo ("dsdsd");
+		// Check if the table already exists
+		$sql = "CREATE TABLE $table_name (
 					id INT NOT NULL AUTO_INCREMENT,
 					stateCode VARCHAR(4) NOT NULL,
 					countryCode VARCHAR(4) NOT NULL,
 					cityName VARCHAR(255) NOT NULL,
 					PRIMARY KEY (id)
 				)";
-			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-			dbDelta($sql);
-		}
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
 	}
+}
 
-	add_action('init','create_custom_cities_table');
+add_action('init', 'create_custom_cities_table');
 
 // Add custom fields for regular price, sale price, sale schedule, and multiple countries to the product's General tab
 function add_custom_field_to_product_general_tab()
