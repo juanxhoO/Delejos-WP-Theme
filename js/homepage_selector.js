@@ -9,7 +9,7 @@ document.getElementById("delejos_country_selector").addEventListener("change", f
         country: country_code,
     }
 
-    jQuery.get(ajax_object.ajax_url, data, function (data) {
+    jQuery.post(ajax_object.ajax_url, data, function (data) {
         //Filling Cities Selector
         var cities = JSON.parse(data);
         console.log(cities);

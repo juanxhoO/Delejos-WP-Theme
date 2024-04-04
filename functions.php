@@ -633,21 +633,23 @@ add_action('wp_enqueue_scripts', 'ecommerce_homepage_delejos_scripts');
 
 // Fetching Cities from Homepage Selector
 add_action('wp_ajax_nopriv_fetch_cities', 'fetch_cities');
+add_action('wp_ajax_fetch_cities', 'fetch_cities');
 
 function fetch_cities()
 {
-	$country_selected = isset($_GET['country']) ? sanitize_text_field($_GET['country']) : '';
+	$country_selected = isset($_POST['country']) ? sanitize_text_field($_POST['country']) : '';
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'custom_cities';
-	$query = $wpdb->prepare("SELECT city_name FROM $table_name WHERE country_code = %s", $country_selected);
+	$query = $wpdb->prepare("SELECT cityName FROM $table_name WHERE countryCode = %s", $country_selected);
 	$cities = $wpdb->get_results($query);
+
 	// Initialize the result array
 	$result = array();
 	// Check if there are results
 	if ($cities) {
 		// Loop through the results and add them to the result array
 		foreach ($cities as $city) {
-			$result[] = $city->city_name;
+			$result[] = $city->cityName;
 		}
 	}
 	// Return the result (either an array of city names or an empty array)
